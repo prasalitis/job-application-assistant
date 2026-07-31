@@ -1,0 +1,11 @@
+name = "job-scorer"
+agent_type = "subagent"
+description = "Read-only job-posting scorer for /rank batch triage. Fetches a posting via web_fetch and scores it against a rubric passed inline in the task prompt. No file access, no editing."
+model = "mistral-medium-3.5"
+system_prompt_id = "job-scorer"
+thinking = "medium"
+
+[tools]
+enabled = ["web_fetch"]
+disabled = ["read_file", "write_file", "edit", "grep", "bash", "git_bash", "web_search", "task"]
+permission = "never"

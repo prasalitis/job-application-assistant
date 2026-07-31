@@ -1,0 +1,11 @@
+name = "app-reviewer"
+agent_type = "subagent"
+description = "Read-only hiring-manager-proxy subagent: researches the target company and critiques a drafted CV + cover letter against the candidate's profile and writing-style rules. Cannot write or edit files."
+model = "mistral-medium-3.5"
+system_prompt_id = "app-reviewer"
+thinking = "high"
+
+[tools]
+enabled = ["read_file", "grep", "web_search", "web_fetch"]
+disabled = ["write_file", "edit", "bash", "git_bash", "task"]
+permission = "never"
