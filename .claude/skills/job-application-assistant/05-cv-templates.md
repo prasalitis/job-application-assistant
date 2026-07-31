@@ -1,6 +1,9 @@
 # CV Templates and Tailoring Guide
 
 <!-- SETUP: Profile statements and section ordering are personalized by running /setup -->
+<!-- PERSONAL DATA: if `personal/05-profile-statements.md` exists in this workspace (it is
+     gitignored - a contributor's own real data, kept out of git), read it for the actual
+     contact details and profile-statement text to use below. -->
 
 ## Template: LaTeX moderncv (Banking Style)
 
@@ -148,12 +151,12 @@ If there is a gap in your employment history:
 
 ## Compile-and-Inspect Loop (MANDATORY)
 
-After writing the CV and before presenting to the user, always compile and visually inspect the PDF. Iterate until the layout is clean. Workflow:
+After writing the CV and before presenting to the user, always compile and check the PDF. Iterate until the layout is clean. Workflow:
 
 1. Run `lualatex -interaction=nonstopmode main_<company>.tex`
 2. Check the output page count: must be exactly 2
-3. Read the PDF via the Read tool and visually inspect both pages
-4. Check for **orphaned entries**: a `\cventry` title line must never sit alone at the bottom of page 1 with its bullets on page 2
+3. **Confirmed limitation: this environment cannot visually render a PDF.** Do not write or claim "verified visually" or "visually inspected" anywhere - a verified test run made exactly this false claim ("No orphaned \cventry titles (verified visually via compilation)") when only `pdfinfo`/`pdftotext`/`grep` calls had actually run, no image-viewing tool. Use `pdfinfo` for page count and `pdftotext -layout` to check the extracted text reads in a sensible order instead - and say so explicitly in whatever report follows ("checked via pdfinfo/pdftotext, not visual inspection"), every time, not just when a problem happens to bring it up.
+4. Check for **orphaned entries**: a `\cventry` title line must never sit alone at the bottom of page 1 with its bullets on page 2. The pdftotext-based proxy above is a weaker signal for this than true visual inspection would be - flag that weakness in the report rather than asserting a confidence level the check doesn't support.
 
 ### Fixing common page-break problems
 
@@ -187,8 +190,8 @@ cd cv && pdftotext -layout main_<company>.pdf main_<company>.txt
 What to check in the extraction:
 
 - **Contact details as literal text.** The stock template's fontawesome contact icons extract as glyph names (`MOBILE-ALT`, `Envelope`) - harmless noise, because the actual address and number are printed beside them. The failure mode is a contact detail carried *only* by an icon or a hyperlink (like the `LinkedIn` link text, whose URL is not in the text layer): invisible to an ATS. The email address must always appear as printed text.
-- **No garbled output.** `(cid:NNN)` markers or `�` characters mean a font is embedded without a Unicode mapping - an ATS sees the same garbage. This shows up with unusual fonts in custom templates, not with the stock moderncv setup under lualatex.
-- **Reading order.** The stock banking style is single-column, so extraction order matches visual order. Custom templates (via `/add-template`) with sidebars or multi-column layouts can interleave unrelated lines; if extraction order is scrambled, the user is trading ATS compatibility for looks and should be told.
+- **No garbled output.** `(cid:NNN)` markers or a replacement character (U+FFFD) mean a font is embedded without a Unicode mapping - an ATS sees the same garbage. **This is not limited to unusual fonts in custom templates - it has been directly confirmed in the stock moderncv setup under lualatex, in a real generated CV.** Two confirmed real occurrences: a TeX accent-command character (e.g. `\"{a}` for an umlaut) extracted as a replacement character, and a literal UTF-8 middle dot (`·`) used as a contact-line separator also extracted as a replacement character. Testing showed this is font/environment-specific - the same source did NOT reproduce the defect under a different TeX distribution - so there is no single universal LaTeX-syntax fix to recommend with confidence. What to actually do: avoid non-ASCII decorative characters where a plain-ASCII alternative exists (use `|` instead of `·` as a separator); for content that can't be ASCII-only (real place/company names with diacritics), treat this as a residual, environment-dependent risk rather than something with a guaranteed fix, and rely on `tools/pdf-verify.ts` to actually catch it per-CV (it reports `garbledOccurrences` with surrounding context) rather than assuming the stock template is safe by default.
+- **Reading order.** The stock banking style is single-column, so extraction order matches visual order. Custom templates (via `/add-template`) with sidebars or multi-column layouts can interleave unrelated lines; if extraction order is scrambled, the user is trading ATS compatibility for looks.
 - **Keyword coverage.** Match the posting's required/preferred terms against the extracted text, in the posting's language. Prefer the posting's exact term over a synonym when it is truthfully applicable - ATS matching is often literal. Never add a keyword the profile does not support.
 
 ## Page Budget - Hard 2-Page Limit
@@ -234,7 +237,8 @@ Cut the lowest-total-score line first, regardless of which section it sits in.
 
 - Do not mechanically cut from the bottom of a static section list without checking relevance. "Cut the oldest role first" is wrong if that role is literally about the skill the posting asks for.
 - Do not cut the one concrete example the cover letter leans on. Relevance is measured against the cover letter you wrote, not just the job posting — interviewers will have read both.
-- Do not cut to fit if the fit is borderline (2.02 pages). Prefer `\enlargethispage{2-3\baselineskip}` on a late section for near-misses; reserve content cuts for genuine overflow (content on page 3 that is more than a single trailing section).
+- Do not cut to fit if the fit is borderline (2.02 pages). Prefer `\enlargethispage{2-3\baselineskip}` on a near-misses; reserve content cuts for genuine overflow (content on page 3 that is more than a single trailing section).
+- **Never silently delete an entire section to hit the page limit - ask first.** A verified test run deleted an entire named section (Speaking Engagements) to save space, without asking, and without it being anywhere in the practical order of cuts above - a credential the rest of the application often treats as a recurring credibility hook (profile statements, cover letters, interview prep). It also left the CV internally inconsistent: other parts of the same document still referenced the deleted section's content with nothing left to back it up. Trimming a bullet or two within a section is a normal relevance-weighted cut; removing an entire named section (Speaking Engagements, Publications, Certifications, etc.) is a different kind of decision and must be surfaced to the user with a specific ask ("cutting X would save a page - remove it, or trim elsewhere instead?") rather than made silently, no matter how tight the page budget is.
 
 ## Recommended Section Order
 

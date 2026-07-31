@@ -1,6 +1,11 @@
 # Job Evaluation Framework
 
 <!-- SETUP: Skill match areas and career goals are personalized by running /setup -->
+<!-- PERSONAL DATA: if `personal/04-job-evaluation-criteria.md` exists in this workspace
+     (it is gitignored - a contributor's own real data, kept out of git), read it and use
+     it as the actual source of truth for skill-match areas, location constraints, career
+     goals, and salary anchors. It may also define an optional quick pre-screen to run
+     before full scoring. -->
 
 ## Scoring Dimensions
 
@@ -35,7 +40,7 @@ Does work history align with what they're looking for?
 **Entry-level:** [ROLES_WITH_LIMITED_EXPERIENCE]
 
 ### 3. Behavioral/Culture Fit (0-100)
-Does the role and company culture match the behavioral profile?
+Does the role and company culture match the behavioral profile (see `02-behavioral-profile.md`)?
 
 | Score | Meaning |
 |-------|---------|
@@ -49,8 +54,9 @@ Does the role and company culture match the behavioral profile?
 ### 4. Location & Logistics (Pass/Fail + Notes)
 - Within commute range: PASS
 - Remote with occasional office: PASS
-- Requires relocation: FAIL (deal-breaker)
+- Requires relocation: FAIL (deal-breaker) - unless your personal criteria file marks specific target countries/cities as PASS
 - Frequent international travel: FLAG (discuss with user)
+- Language requirements: check against your personal criteria file for which languages are acceptable, tested, or hard-fail
 
 ### 5. Career Alignment & Motivation (0-100)
 Does this role advance career goals and contain tasks that energize?
@@ -62,10 +68,7 @@ Does this role advance career goals and contain tasks that energize?
 | 40-59 | Decent job but doesn't build toward career goals |
 | 0-39 | Dead end or backwards step |
 
-**Career goals:**
-- [YOUR_CAREER_GOAL_1]
-- [YOUR_CAREER_GOAL_2]
-- [YOUR_CAREER_GOAL_3]
+**Career goals:** [YOUR_CAREER_GOAL_1], [YOUR_CAREER_GOAL_2], [YOUR_CAREER_GOAL_3]
 
 **Motivation filter:** Evaluate not just whether you *can* do the tasks, but whether the tasks will *energize* you. Consider:
 - Tasks that energize: [YOUR_ENERGIZING_TASKS]
@@ -95,7 +98,7 @@ Present findings as:
 | Overall index | XX.X (+/-X.X% vs baseline) |
 ```
 
-Interpret results relative to the baseline defined in the data file's metadata. For index-based data, higher typically means above-market compensation.
+Interpret results relative to the baseline defined in the data file's metadata. For index-based data, higher typically means above-market compensation. Also check your personal criteria file for any known salary anchors for the relevant market.
 
 If the salary tool is not configured, skip this section.
 

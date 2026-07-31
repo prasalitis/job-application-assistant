@@ -25,9 +25,12 @@ Follow these steps **in order**.
 2. Read `job_search_tracker.csv`. Build the exclusion set: any company+role already in the tracker is out of scope regardless of flags - it has been applied to or consciously tracked.
 3. Select candidates: entries with status `new` (or all non-applied entries with `--all`), minus the exclusion set, filtered by the focus area if one was given.
 4. If no candidates remain, say so ("Nothing new to rank - run /scrape to find fresh postings") and stop.
-5. Read the scoring framework and profile **once**:
-   - `.claude/skills/job-application-assistant/04-job-evaluation.md`
-   - `.claude/skills/job-application-assistant/01-candidate-profile.md`
+5. Resolve and read the scoring framework and profile **once** - personal data first, generic fallback otherwise, same pattern as `/apply`:
+   ```bash
+   bun run tools/resolve-doc.ts --primary personal/04-job-evaluation-criteria.md --fallback .claude/skills/job-application-assistant/04-job-evaluation.md
+   bun run tools/resolve-doc.ts --primary personal/01-candidate-profile.md --fallback .claude/skills/job-application-assistant/01-candidate-profile.md
+   ```
+   Read each call's `resolvedPath`.
 
 State how many jobs will be ranked before proceeding.
 

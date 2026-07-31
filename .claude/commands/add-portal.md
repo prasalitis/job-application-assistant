@@ -118,7 +118,11 @@ Do not proceed to Step 5 until search, detail, and tests all pass.
 
 ## Step 5: Register
 
-1. Ask whether the user wants the new portal added to their `/scrape` search strategy. If yes, add the portal's site to the relevant query categories in `.claude/skills/job-scraper/search-queries.md` (site-specific queries, like the existing `jobindex.dk` entries) so `/scrape` includes it.
+1. Ask whether the user wants the new portal added to their `/scrape` search strategy. If yes, resolve the search-queries file first - personal data first, generic fallback otherwise:
+   ```bash
+   bun run tools/resolve-doc.ts --primary personal/job-scraper-search-queries.md --fallback .claude/skills/job-scraper/search-queries.md
+   ```
+   Add the portal's site to the relevant query categories in the **resolved path** (site-specific queries, like the existing `jobindex.dk` entries) so `/scrape` includes it. If `resolvedPath` fell back to the generic file (no `personal/` file exists yet), still write to `personal/job-scraper-search-queries.md` instead - creating it if needed - never to the generic tracked template, which would commit real search-strategy data into a git-tracked file.
 2. Remind the user to add the install line for their own records if they maintain a fork README:
    ```bash
    cd .agents/skills/<name>/cli && bun install && cd ../../../..

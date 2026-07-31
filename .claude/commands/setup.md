@@ -74,19 +74,23 @@ I will read these and cross-reference before proposing any changes.
 
 If every subfolder is empty, stop and tell the user to populate the folder. Point at `documents/README.md` for the layout.
 
-### Step A2: Read Existing Skill Files
+### Step A2: Resolve and Read Existing Skill Files
 
-Read these in parallel before extracting anything. You must know what is already there to make the merge intelligent.
+**Resolve each file first - personal data first, generic fallback otherwise** (real profile data lives in the gitignored `personal/` folder, never in the tracked template files):
 
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
-- `.claude/skills/job-application-assistant/02-behavioral-profile.md`
-- `.claude/skills/job-application-assistant/03-writing-style.md`
-- `.claude/skills/job-application-assistant/04-job-evaluation.md`
-- `.claude/skills/job-application-assistant/05-cv-templates.md`
-- `.claude/skills/job-application-assistant/06-cover-letter-templates.md`
-- `.claude/skills/job-application-assistant/07-interview-prep.md`
+```bash
+bun run tools/resolve-doc.ts --primary personal/01-candidate-profile.md --fallback .claude/skills/job-application-assistant/01-candidate-profile.md
+bun run tools/resolve-doc.ts --primary personal/02-behavioral-profile.md --fallback .claude/skills/job-application-assistant/02-behavioral-profile.md
+bun run tools/resolve-doc.ts --primary personal/03-writing-style-overrides.md --fallback .claude/skills/job-application-assistant/03-writing-style.md
+bun run tools/resolve-doc.ts --primary personal/04-job-evaluation-criteria.md --fallback .claude/skills/job-application-assistant/04-job-evaluation.md
+bun run tools/resolve-doc.ts --primary personal/05-profile-statements.md --fallback .claude/skills/job-application-assistant/05-cv-templates.md
+bun run tools/resolve-doc.ts --primary personal/06-cover-letter-preferences.md --fallback .claude/skills/job-application-assistant/06-cover-letter-templates.md
+bun run tools/resolve-doc.ts --primary personal/07-star-examples.md --fallback .claude/skills/job-application-assistant/07-interview-prep.md
+```
 
-Hold this content in context throughout Path A. Do not re-read.
+Read each call's `resolvedPath` in parallel before extracting anything. You must know what is already there to make the merge intelligent. Hold this content in context throughout Path A. Do not re-read.
+
+**Remember every resolved path (and each call's `usedPrimary`) for Step A7 - that is where you write.** Regardless of what `resolvedPath` returned, Step A7 always targets `personal/<filename>`, creating it on a genuinely first-ever run rather than falling back to editing the generic tracked template. Writing to the `.claude/` fallback path would commit real profile data into a git-tracked file.
 
 ### Step A3: Parse Documents
 
@@ -211,7 +215,7 @@ Wait for the user's choice on each conflict. If no conflicts, state "No conflict
 
 ### Step A7: Write Confirmed Changes and Fill Gaps
 
-Apply the confirmed changes with the Edit tool. Make targeted edits only. Do not rewrite entire files. State which changes were applied per file. If a file has no confirmed changes, state "No changes made to [filename]."
+Apply the confirmed changes with the Edit tool **to the personal/ paths resolved in Step A2** - not the generic `.claude/` fallback filenames, even where that is what `resolvedPath` returned (create the `personal/` file for the first time if it doesn't exist yet, using the generic file's section structure as a starting point). Make targeted edits only. Do not rewrite entire files. State which changes were applied per file. If a file has no confirmed changes, state "No changes made to [filename]."
 
 Documents cover skills, experience, education, references, and behavioral signal. They do not cover everything `/apply` and `/scrape` need. After the writes, ask follow-up questions for gaps:
 
@@ -222,7 +226,7 @@ Documents cover skills, experience, education, references, and behavioral signal
 - Commute or location constraints (if not visible from CV)
 - Job search configuration (use the questions from Path C Section 9 below)
 
-Then proceed to Step 3 to populate the non-skill files (`CLAUDE.md`, `cv/main_example.tex`, `.claude/skills/job-scraper/search-queries.md`). Step 3 will detect that the seven skill files are already populated and skip those substeps.
+Then proceed to Step 3 to populate the non-skill files (`CLAUDE.md`, `cv/main_example.tex`, the job-scraper search-queries file). Step 3 will detect that the seven `personal/` skill files are already populated and skip those substeps.
 
 ---
 
@@ -331,13 +335,15 @@ Once data collection is complete, generate or finish populating the following fi
 ### 1. Update `CLAUDE.md`
 Replace all `[PLACEHOLDER]` tokens with the user's actual information. Keep the structure, workflow, and verification checklist intact.
 
-### 2. Populate `01-candidate-profile.md` *(Path B and C; skip if Path A populated it)*
+**All of items 2-6 and 8 below write to `personal/<filename>`, never to the generic `.claude/` or `.claude/skills/job-scraper/` tracked template - create the `personal/` file for the first time if it doesn't exist yet, using the matching generic file's section structure as a starting point. "Skip if Path A populated it" means skip if the `personal/` file already has real (non-placeholder) content, checked via the same `resolve-doc.ts` calls from Step A2.**
+
+### 2. Populate `personal/01-candidate-profile.md` *(Path B and C; skip if Path A populated it)*
 Write the full candidate profile with structured sections: Identity, Education, Professional Experience, Independent Projects, Technical Skills, Publications, Awards, References.
 
-### 3. Populate `02-behavioral-profile.md` *(Path B and C; skip if Path A populated it)*
+### 3. Populate `personal/02-behavioral-profile.md` *(Path B and C; skip if Path A populated it)*
 Write the behavioral profile based on assessment results or synthesized answers.
 
-### 4. Update `04-job-evaluation.md` *(Path B and C; skip if Path A populated it)*
+### 4. Update `personal/04-job-evaluation-criteria.md` *(Path B and C; skip if Path A populated it)*
 Replace skill match areas with the user's actual skills:
 - Strong match areas: [their primary skills]
 - Moderate match areas: [their secondary skills]
@@ -345,16 +351,16 @@ Replace skill match areas with the user's actual skills:
 
 Update career goals and motivation filters with their actual preferences.
 
-### 5. Update `05-cv-templates.md` *(Path B and C; skip if Path A populated it)*
+### 5. Update `personal/05-profile-statements.md` *(Path B and C; skip if Path A populated it)*
 Add role-specific profile statement templates based on their background.
 
-### 6. Update `07-interview-prep.md` *(Path B and C; skip if Path A populated it)*
+### 6. Update `personal/07-star-examples.md` *(Path B and C; skip if Path A populated it)*
 Create STAR examples from their actual experience (at least 3-4 examples). Path A leaves STAR stubs under "## STAR Candidates (Complete Manually)" rather than full examples; if any stubs are present, mention them in Step 4 so the user knows to flesh them out.
 
 ### 7. Update `cv/main_example.tex`
 Replace placeholder personal data with their actual name, contact info, and add their education and most recent experience entries.
 
-### 8. Generate `.claude/skills/job-scraper/search-queries.md`
+### 8. Generate `personal/job-scraper-search-queries.md`
 Replace all placeholder tokens in the search queries file with the user's actual information from Section 9 (or the equivalent follow-up questions in Path A's Step A7):
 - Replace `[YOUR_PRIMARY_ROLE_TYPE]`, `[YOUR_PRIMARY_JOB_TITLE]`, etc. with actual role titles
 - Replace `[YOUR_KEY_SKILL]`, `[YOUR_DOMAIN_KEYWORD_1]`, etc. with actual skills and domain terms
@@ -375,22 +381,24 @@ Present a summary:
 > **Setup complete!** Here's what was generated:
 >
 > - `CLAUDE.md` - Your full candidate profile
-> - `.claude/skills/job-application-assistant/01-candidate-profile.md` - Structured profile
-> - `.claude/skills/job-application-assistant/02-behavioral-profile.md` - Behavioral assessment
-> - `.claude/skills/job-application-assistant/04-job-evaluation.md` - Personalized evaluation framework
-> - `.claude/skills/job-application-assistant/05-cv-templates.md` - CV templates with your profile statements
-> - `.claude/skills/job-application-assistant/07-interview-prep.md` - STAR examples from your experience
+> - `personal/01-candidate-profile.md` - Structured profile
+> - `personal/02-behavioral-profile.md` - Behavioral assessment
+> - `personal/04-job-evaluation-criteria.md` - Personalized evaluation framework
+> - `personal/05-profile-statements.md` - CV templates with your profile statements
+> - `personal/07-star-examples.md` - STAR examples from your experience
 > - `cv/main_example.tex` - Your LaTeX CV template
-> - `.claude/skills/job-scraper/search-queries.md` - Job search queries for `/scrape`
+> - `personal/job-scraper-search-queries.md` - Job search queries for `/scrape`
+>
+> All `personal/` files are gitignored - your real data stays out of git regardless of what you commit from this repo.
 >
 > **Try it out:**
 > - Run `/scrape` to search for matching jobs right now
 > - Run `/apply` with a job posting URL to see the full application workflow
 > - Run `/setup --section search` later to update your search queries as your priorities evolve
 
-If Path A left any STAR stubs in `07-interview-prep.md`, also note:
+If Path A left any STAR stubs in `personal/07-star-examples.md`, also note:
 
-> Path A flagged [N] STAR candidate stubs in `07-interview-prep.md` that need your situation/task/action/result details before you use them in interviews.
+> Path A flagged [N] STAR candidate stubs in `personal/07-star-examples.md` that need your situation/task/action/result details before you use them in interviews.
 
 ---
 

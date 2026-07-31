@@ -1,5 +1,9 @@
 # Writing Style Guide
 
+<!-- PERSONAL DATA: if `personal/03-writing-style-overrides.md` exists in this workspace
+     (it is gitignored - a contributor's own real preferences, kept out of git), read it
+     and apply those overrides on top of the generic guidance below where they conflict. -->
+
 ## Critical Rules
 
 1. **NO em-dashes (--).**  Use commas, periods, or restructure the sentence instead.
@@ -23,7 +27,7 @@
 
 The subject line / headline of the application should be engaging and specific, not generic.
 
-**Bad:** "Application for Sales Engineer Position" / "Ansogning til stilling som ingeniør"
+**Bad:** "Application for Sales Engineer Position"
 **Good:** "[Your specialty] specializing in [relevant keyword from posting]"
 
 Formula: **[Title/education] + [relevant keyword from the job posting]**

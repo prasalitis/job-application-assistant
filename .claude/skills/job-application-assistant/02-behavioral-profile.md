@@ -2,6 +2,9 @@
 
 <!-- SETUP: This file is populated by running /setup -->
 <!-- You can use results from PI, DISC, Myers-Briggs, StrengthsFinder, or a self-assessment -->
+<!-- PERSONAL DATA: if `personal/02-behavioral-profile.md` exists in this workspace (it is
+     gitignored - a contributor's own real data, kept out of git), read it INSTEAD of the
+     placeholders below and use it as the actual source of truth for this file's content. -->
 
 ## Overview
 [YOUR_NAME]'s behavioral assessment identifies them as a **[PROFILE_TYPE]** pattern. [1-2 SENTENCE_SUMMARY].

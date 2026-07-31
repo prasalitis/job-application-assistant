@@ -72,3 +72,21 @@ upskill/*.md
 .agents/**/node_modules/
 .agents/**/*.log
 .agents/usage/
+
+# Personal data split out of the generic tracked skill files (see personal/*.md headers)
+personal/
+
+# Real personal config/notes, not yet genericized like CLAUDE.md
+AGENTS.md
+SETUP_NOTES_JULIUS.md
+
+# Pretest/backup snapshots of tracked state files
+job_search_tracker_BACKUP*.csv
+job_scraper/seen_jobs_BACKUP*.json
+
+# Tool test fixtures and migration scratch output
+tools/testdata/
+_vibe_migration_test_output/
+
+# Empty scratch stub, not a real deliverable
+files.zip

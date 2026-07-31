@@ -2,6 +2,9 @@
 
 <!-- SETUP: This file is populated by running /setup -->
 <!-- After running /setup, all sections will be filled with your actual information -->
+<!-- PERSONAL DATA: if `personal/01-candidate-profile.md` exists in this workspace (it is
+     gitignored - a contributor's own real data, kept out of git), read it INSTEAD of the
+     placeholders below and use it as the actual source of truth for this file's content. -->
 
 ## Identity
 - **Name:** [YOUR_NAME]

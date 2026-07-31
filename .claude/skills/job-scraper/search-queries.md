@@ -1,6 +1,10 @@
 # Search Queries for Job Scraper
 
 <!-- SETUP: Customize these queries based on your skills, target roles, and location -->
+<!-- PERSONAL DATA: if `personal/job-scraper-search-queries.md` exists in this workspace
+     (it is gitignored - a contributor's own real data, kept out of git), read it and use
+     it as the actual source of truth for search sites, query categories, priority employers,
+     location filter, language filter, and date filter. -->
 
 ## Search Sites
 

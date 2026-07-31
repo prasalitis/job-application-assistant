@@ -4,13 +4,15 @@ You are resetting parts of the job search framework back to a blank state so the
 
 **This command is destructive.** Nothing is deleted until the user explicitly confirms. Follow these steps exactly in order.
 
+**Personal-data note:** all real candidate data lives in the gitignored `personal/` folder, never in the tracked `.claude/skills/job-application-assistant/` files (those are generic templates and never contain real data to clear). `profile` scope therefore only ever touches `personal/`.
+
 ---
 
 ## Step 0: Parse Scope from Arguments
 
 Check `$ARGUMENTS` for a scope keyword:
 
-- `profile` — clears candidate profile data from skill files only
+- `profile` — clears candidate profile data from `personal/` only
 - `documents` — deletes user-provided files from the `documents/` folder only
 - `all` — both of the above
 
@@ -18,7 +20,7 @@ If `$ARGUMENTS` is empty or does not contain a recognized scope keyword, ask:
 
 > **What would you like to reset?**
 >
-> - **`profile`** — Clears candidate data from the skill files (profile, behavioral, STAR examples, profile statements). The framework structure and writing rules are preserved. Use this to re-run `/setup` from scratch.
+> - **`profile`** — Clears all real candidate data from `personal/` (identity, experience, behavioral profile, writing-style overrides, evaluation criteria, profile statements, cover-letter preferences, STAR examples). The generic tracked framework files are never touched. Use this to re-run `/setup` from scratch.
 >
 > - **`documents`** — Deletes all files you've placed in the `documents/` folder (CV PDFs, LinkedIn export, diplomas, references, past applications). The folder structure and `README.md` are preserved.
 >
@@ -36,35 +38,36 @@ Before doing anything, show the user precisely what will be wiped.
 
 ### If scope includes `profile`:
 
-Read the current state of these files and report whether each has content or is already empty:
+Check whether each of these files exists in `personal/` (a file that doesn't exist yet has nothing to clear - report it as "not created yet" rather than proposing to write a blank file into existence):
 
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
-- `.claude/skills/job-application-assistant/02-behavioral-profile.md`
-- `.claude/skills/job-application-assistant/05-cv-templates.md` *(profile statements section only — framework structure is preserved)*
-- `.claude/skills/job-application-assistant/07-interview-prep.md` *(STAR examples and STAR candidates sections only — framework structure is preserved)*
+- `personal/01-candidate-profile.md`
+- `personal/02-behavioral-profile.md`
+- `personal/03-writing-style-overrides.md`
+- `personal/04-job-evaluation-criteria.md`
+- `personal/05-profile-statements.md`
+- `personal/06-cover-letter-preferences.md`
+- `personal/07-star-examples.md`
 
 Present as:
 
 ```
 ## Profile reset will clear:
 
-- 01-candidate-profile.md — [has content / already empty]
-  Full file will be replaced with a blank template.
+- personal/01-candidate-profile.md — [has content / not created yet]
+- personal/02-behavioral-profile.md — [has content / not created yet]
+- personal/03-writing-style-overrides.md — [has content / not created yet]
+- personal/04-job-evaluation-criteria.md — [has content / not created yet]
+- personal/05-profile-statements.md — [has content / not created yet]  (includes CV contact details)
+- personal/06-cover-letter-preferences.md — [has content / not created yet]  (includes cover-letter contact details)
+- personal/07-star-examples.md — [has content / not created yet]
 
-- 02-behavioral-profile.md — [has content / already empty]
-  Full file will be replaced with a blank template.
+Each existing file will be replaced with a blank template. Files not created yet are skipped - nothing new is written.
 
-- 05-cv-templates.md — [has profile statements / already blank]
-  Profile statement templates will be cleared. LaTeX structure and tailoring guidelines are preserved.
-
-- 07-interview-prep.md — [has STAR examples / already blank]
-  STAR examples and any STAR candidate stubs will be cleared. Framework, tough questions, and roleplay guidelines are preserved.
-
-The following files are NOT touched (they contain framework rules, not candidate data):
-  - 03-writing-style.md
-  - 04-job-evaluation.md
-  - 06-cover-letter-templates.md
+The tracked framework files under .claude/skills/job-application-assistant/ are NOT
+touched - they hold no candidate data to clear.
 ```
+
+If every `personal/*.md` file above is missing, state "No profile data exists yet in `personal/` — nothing to clear." and skip the confirmation step for this scope.
 
 ### If scope includes `documents`:
 
@@ -114,11 +117,14 @@ Wait for the user's response.
 
 ### Profile reset
 
-**For `01-candidate-profile.md`**, replace the file content with:
+Only touch files confirmed to exist in Step 1. For each, replace its full content (each `personal/*.md` file is now single-purpose - no framework text is mixed in, so a full-file blank is safe).
+
+**`personal/01-candidate-profile.md`:**
 
 ```markdown
-# Candidate Profile
+# Candidate Profile (Personal Data)
 
+<!-- This file is gitignored - real personal data, never committed. -->
 <!-- Run /setup to populate this file -->
 
 ## Identity
@@ -138,11 +144,12 @@ Wait for the user's response.
 ## References
 ```
 
-**For `02-behavioral-profile.md`**, replace the file content with:
+**`personal/02-behavioral-profile.md`:**
 
 ```markdown
-# Behavioral Profile
+# Behavioral Profile (Personal Data)
 
+<!-- This file is gitignored - real personal data, never committed. -->
 <!-- Run /setup to populate this file -->
 
 ## Overview
@@ -160,29 +167,76 @@ Wait for the user's response.
 ## Using This in Applications
 ```
 
-**For `05-cv-templates.md`**, locate the section that begins with `**Profile statement templates` and extends through the role-specific template blocks. Replace only that section with:
+**`personal/03-writing-style-overrides.md`:**
 
 ```markdown
-**Profile statement templates:**
+# Writing Style Overrides (Personal Data)
 
-<!-- Run /setup to populate role-specific profile statements -->
+<!-- This file is gitignored - real personal preferences, never committed. -->
+<!-- Run /setup to populate this file -->
+
+These personal preferences override the generic guidance where they conflict.
+
+### Cover letters
+
+### CV
 ```
 
-Leave all other content in `05-cv-templates.md` intact.
-
-**For `07-interview-prep.md`**, locate and remove:
-- The entire `## Ready-Made STAR Examples` section and all numbered STAR examples under it
-- Any `## STAR Candidates (Complete Manually)` section added by `/setup` Path A
-
-Replace with:
+**`personal/04-job-evaluation-criteria.md`:**
 
 ```markdown
+# Job Evaluation Criteria (Personal Data)
+
+<!-- This file is gitignored - real personal data, never committed. -->
+<!-- Run /setup to populate this file -->
+
+## Quick Pre-Screen (run before full scoring)
+
+## Skill Match Areas
+
+## Career Goals
+
+## Location Constraints
+
+## Salary Anchors
+```
+
+**`personal/05-profile-statements.md`:**
+
+```markdown
+# CV Profile Statements (Personal Data)
+
+<!-- This file is gitignored - real personal data, never committed. -->
+<!-- Run /setup to populate this file -->
+
+## Contact Details (for the Document Structure LaTeX template)
+
+## Profile Statement Templates
+```
+
+**`personal/06-cover-letter-preferences.md`:**
+
+```markdown
+# Cover Letter Preferences (Personal Data)
+
+<!-- This file is gitignored - real personal data, never committed. -->
+<!-- Run /setup to populate this file -->
+
+## Contact Details (for the Document Structure LaTeX template)
+
+## Closing Line Preference
+```
+
+**`personal/07-star-examples.md`:**
+
+```markdown
+# Interview Prep — STAR Examples & Real Answers (Personal Data)
+
+<!-- This file is gitignored - real personal data, never committed. -->
+<!-- Run /setup to populate this file -->
+
 ## Ready-Made STAR Examples
-
-<!-- Run /setup to populate STAR examples from your actual experience -->
 ```
-
-Leave all other content in `07-interview-prep.md` intact (STAR format explanation, tough questions, questions to ask interviewers, phone/video tips, follow-up etiquette, roleplay guidelines).
 
 ### Documents reset
 
@@ -209,13 +263,13 @@ After the reset is complete, report:
 [List each file/folder that was actually modified or cleared]
 
 ### Unchanged
-[List anything that was already empty or was intentionally preserved]
+[List anything that was already empty, not created yet, or intentionally preserved]
 ```
 
 Then tell the user what to do next based on what was reset:
 
 **If profile was reset:**
-> Your candidate profile is now blank. Run `/setup` to repopulate it. The command auto-detects any files in your `documents/` folder and offers to read from there; otherwise it walks you through a CV import or interactive interview.
+> Your candidate profile is now blank. Run `/setup` to repopulate it - the command auto-detects any files in your `documents/` folder and offers to read from there; otherwise it walks you through a CV import or interactive interview. Either way, it writes to the same `personal/` files.
 
 **If documents were reset:**
 > The `documents/` folder is now empty. Add your career documents and run `/setup` to populate your profile. See `documents/README.md` for instructions on what to put where.

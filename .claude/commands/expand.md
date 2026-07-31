@@ -8,12 +8,16 @@ Follow these steps **exactly in order**. Do not skip steps.
 
 ## Step 0: Read Existing Profile Files
 
-Read these two files in parallel before doing anything else. You must know what is already there so you do not propose duplicates.
-
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
-- `.claude/skills/job-application-assistant/02-behavioral-profile.md`
+**Resolve both files first - personal data first, generic fallback otherwise:**
+```bash
+bun run tools/resolve-doc.ts --primary personal/01-candidate-profile.md --fallback .claude/skills/job-application-assistant/01-candidate-profile.md
+bun run tools/resolve-doc.ts --primary personal/02-behavioral-profile.md --fallback .claude/skills/job-application-assistant/02-behavioral-profile.md
+```
+Read each call's `resolvedPath`. You must know what is already there so you do not propose duplicates.
 
 Hold this content in context throughout the command. Do not re-read these files later.
+
+**Remember both resolved paths for Step 5 - that is where you write, and writing to the wrong one (the generic tracked template instead of the personal file) would silently discard the addition and risk committing personal data into a git-tracked file.**
 
 ---
 
@@ -166,7 +170,7 @@ Wait for the user's response before writing anything.
 
 ## Step 5: Write Confirmed Additions
 
-Apply only the confirmed items. Use the Edit tool to add to the relevant sections of each file — do not rewrite entire files.
+Apply only the confirmed items. **Write to the resolved paths from Step 0, not the hardcoded `.claude/` filenames.** Use the Edit tool to add to the relevant sections of each file — do not rewrite entire files.
 
 ### Additions to `01-candidate-profile.md`
 - Technical skills (primary and secondary) → append to the Technical Skills section

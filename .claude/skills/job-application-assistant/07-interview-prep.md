@@ -1,6 +1,10 @@
 # Interview Preparation Guide
 
 <!-- SETUP: STAR examples are personalized by running /setup based on your actual experience -->
+<!-- PERSONAL DATA: if `personal/07-star-examples.md` exists in this workspace (it is
+     gitignored - a contributor's own real data, kept out of git), read it for actual
+     STAR examples, prepared tough-question answers, and interview logistics notes to
+     use in place of the templates below. -->
 
 ## STAR Format
 

@@ -23,11 +23,16 @@ Follow these steps **exactly in order**. Do not skip steps.
 
 ## Step 1: DRAFTER - Evaluate Fit
 
-Read the evaluation framework:
-- `.claude/skills/job-application-assistant/04-job-evaluation.md`
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
+**Resolve and read the evaluation framework - personal data first, generic fallback otherwise.** This repo's real candidate data lives in a gitignored `personal/` folder that overrides the generic template files; `resolve-doc.ts` finds the right one deterministically rather than relying on you to remember to check:
 
-Using the framework from `04-job-evaluation.md`, evaluate the job posting against the candidate's profile. If the salary lookup tool is configured, run:
+```bash
+bun run tools/resolve-doc.ts --primary personal/04-job-evaluation-criteria.md --fallback .claude/skills/job-application-assistant/04-job-evaluation.md
+bun run tools/resolve-doc.ts --primary personal/01-candidate-profile.md --fallback .claude/skills/job-application-assistant/01-candidate-profile.md
+```
+
+Read each call's `resolvedPath`.
+
+Using the resolved evaluation framework, evaluate the job posting against the candidate's profile. If the salary lookup tool is configured, run:
 
 ```bash
 python salary_lookup.py "<Company Name>" --json
@@ -54,10 +59,13 @@ After presenting the evaluation, ask the user:
 
 You already have `01-candidate-profile.md` and `04-job-evaluation.md` in context from Step 1. **Do not re-read them.**
 
-Read only the reference files you do not yet have:
-- `.claude/skills/job-application-assistant/03-writing-style.md`
-- `.claude/skills/job-application-assistant/05-cv-templates.md`
-- `.claude/skills/job-application-assistant/06-cover-letter-templates.md`
+Resolve and read the reference files you do not yet have (personal-first, same pattern as Step 1):
+```bash
+bun run tools/resolve-doc.ts --primary personal/03-writing-style-overrides.md --fallback .claude/skills/job-application-assistant/03-writing-style.md
+bun run tools/resolve-doc.ts --primary personal/05-profile-statements.md --fallback .claude/skills/job-application-assistant/05-cv-templates.md
+bun run tools/resolve-doc.ts --primary personal/06-cover-letter-preferences.md --fallback .claude/skills/job-application-assistant/06-cover-letter-templates.md
+```
+Read each call's `resolvedPath`.
 
 Also read the most recent existing CV and cover letter files for concrete structural reference (one of each is enough):
 - Read any existing `cv/main_*.tex` file as a LaTeX template reference
@@ -87,7 +95,13 @@ Write both files to disk. Keep the exact text of both drafts in working memory �
 
 Use the **Agent tool** to spawn a `general-purpose` reviewer agent. The reviewer gets a fresh context, so pass the drafts **inline in the prompt** below (do not make the reviewer Read them). Scope the reviewer's file reads to content-critique essentials only — the reviewer does not need the LaTeX template files (`05`, `06`) to critique content, since those govern structural/LaTeX concerns the drafter already applied.
 
-Replace `<COMPANY>`, `<ROLE>`, `<INSERT_JOB_POSTING_TEXT_HERE>`, `<INSERT_CV_DRAFT_HERE>`, and `<INSERT_COVER_LETTER_DRAFT_HERE>` with actual values before dispatching.
+Resolve the one remaining reference path you need (02) here, then pass all four resolved paths inline in the agent prompt so the reviewer only ever does a plain `Read` on a path you give it, never its own resolution — this avoids the reviewer silently reading the generic template file instead of `personal/`:
+
+```bash
+bun run tools/resolve-doc.ts --primary personal/02-behavioral-profile.md --fallback .claude/skills/job-application-assistant/02-behavioral-profile.md
+```
+
+Replace `<COMPANY>`, `<ROLE>`, `<INSERT_JOB_POSTING_TEXT_HERE>`, `<INSERT_CV_DRAFT_HERE>`, `<INSERT_COVER_LETTER_DRAFT_HERE>`, and the four `<RESOLVED_..._PATH>` placeholders (from this step's and Step 1/2's `resolve-doc.ts` calls) with actual values before dispatching.
 
 ```
 You are a hiring manager proxy reviewing a job application. Your job is to make the application as targeted and compelling as possible.
@@ -102,11 +116,11 @@ Use WebSearch and WebFetch to research:
 - Company culture and values
 
 ### 2. Read Reference Materials (content-critique only)
-Read these four files — and only these — to ground your critique:
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
-- `.claude/skills/job-application-assistant/02-behavioral-profile.md` — use this specifically to check whether the cover letter's voice matches the candidate's natural register. A "Collaborator" PI profile, for example, should not be given a combative, solo-hero tone; a "Persuader" profile should not be given over-hedged, apologetic phrasing.
-- `.claude/skills/job-application-assistant/03-writing-style.md`
-- `.claude/skills/job-application-assistant/04-job-evaluation.md`
+Read these four files — and only these — to ground your critique. **Use the exact resolved paths below, already determined by the orchestrator - do not substitute the generic `.claude/` filenames, which may not be the real data source in this workspace:**
+- `<RESOLVED_01_PATH>`
+- `<RESOLVED_02_PATH>` — use this specifically to check whether the cover letter's voice matches the candidate's natural register. A "Collaborator" PI profile, for example, should not be given a combative, solo-hero tone; a "Persuader" profile should not be given over-hedged, apologetic phrasing.
+- `<RESOLVED_03_PATH>`
+- `<RESOLVED_04_PATH>`
 
 Do NOT read `05-cv-templates.md` or `06-cover-letter-templates.md` — those govern LaTeX structure the drafter already applied and are not needed for content critique.
 

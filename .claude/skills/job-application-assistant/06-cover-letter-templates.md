@@ -1,5 +1,10 @@
 # Cover Letter Templates and Tailoring Guide
 
+<!-- PERSONAL DATA: if `personal/06-cover-letter-preferences.md` exists in this workspace
+     (it is gitignored - a contributor's own real data, kept out of git), read it for the
+     actual contact details and any personal style overrides (e.g. a preference to omit
+     the closing line below) to apply on top of the generic guidance here. -->
+
 ## Template: Custom cover.cls (XeLaTeX)
 
 Cover letters use a custom LaTeX document class (`cover.cls`) with Lato/Raleway fonts.
@@ -57,7 +62,6 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cover Letter - [Company], [Role]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[]{cover}
 \usepackage{fancyhdr}
 
@@ -108,6 +112,8 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 \end{document}
 ```
 
+**Default closing behavior:** the template above ends with `\closing{Kind regards,}` by default. Some users prefer to end with name only (no closing line) - if your personal preferences file specifies this, override the template accordingly and note the date this preference started, so historical letters using the old convention aren't retroactively treated as inconsistent.
+
 ## Key Commands Reference
 
 | Command | Purpose |
@@ -149,7 +155,7 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 ### Non-English Cover Letters
 - Same template structure, just write content in the posting's language
 - Adjust date format to local convention
-- Adjust closing to local convention (e.g. "Med venlig hilsen," for Danish)
+- Adjust closing to local convention (e.g. "Med venlig hilsen," for Danish) - unless your personal preferences specify no closing line regardless of language
 
 ## Checklist Before Finalizing
 - [ ] No em-dashes (use commas or periods instead)
