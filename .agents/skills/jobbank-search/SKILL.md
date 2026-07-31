@@ -11,12 +11,12 @@ description: >
   jobbank, akademikernes jobbank, jobs denmark, academic jobs denmark, find job
   denmark, highly educated jobs, graduate job denmark, trainee position denmark,
   ph.d. position denmark, postdoc denmark, studiejob, fuldtidsjob, deltidsjob,
-  vikariat, freelance job, praktikplads, job søgning, jobsøgning, søg job,
+  vikariat, freelance job, praktikplads, job soegning, jobsoegning, soeg job,
   ledige stillinger, nye jobs, it jobs denmark, engineering jobs denmark,
   marketing jobs denmark, finance jobs denmark, healthcare jobs denmark,
-  remote job denmark, fjernarbejde, job københavn, job aarhus, job odense,
+  remote job denmark, fjernarbejde, job koebenhavn, job aarhus, job odense,
   nyuddannede job, job til nyuddannede, international job denmark,
-  jobbank søgning, find stilling, data scientist job, software developer job,
+  jobbank soegning, find stilling, data scientist job, software developer job,
   projektleder stilling, konsulent job, data analyse job.
 context: fork
 allowed-tools: Bash(bun run .agents/skills/jobbank-search/cli/src/cli.ts *)

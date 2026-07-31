@@ -1,0 +1,20 @@
+{
+  "name": "arbetsformedlingen-cli",
+  "version": "1.0.0",
+  "description": "CLI for searching Swedish jobs via the official JobTech Dev API (jobsearch.api.jobtechdev.se) backing arbetsformedlingen.se — no authentication, zero runtime dependencies.",
+  "type": "module",
+  "main": "src/cli.ts",
+  "bin": {
+    "arbetsformedlingen-search": "src/cli.ts"
+  },
+  "scripts": {
+    "start": "bun run src/cli.ts",
+    "test": "bun test --timeout 30000",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/bun": "latest"
+  }
+}
