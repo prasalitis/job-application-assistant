@@ -117,12 +117,12 @@ cd ai-job-search
 Or manually: fork on GitHub, then clone your fork.
 
 ## 3. Install job search CLI dependencies
-Run these from the repository root.
+Run these from the repository root. Install only what applies to your market - see the "Job search tools" table in the README for what each one covers.
 
 - PowerShell:
 
 ```powershell
-$tools = @("jobbank-search", "jobdanmark-search", "jobindex-search", "jobnet-search", "linkedin-search")
+$tools = @("jobbank-search", "jobdanmark-search", "jobindex-search", "jobnet-search", "linkedin-search", "freehire-search", "pracuj-search", "nofluffjobs-search", "moovijob-search", "jobsch-search", "arbetsformedlingen-search", "arbeitsagentur-search", "nav-search")
 foreach ($tool in $tools) {
   Set-Location ".agents/skills/$tool/cli"
   bun install
@@ -132,14 +132,14 @@ foreach ($tool in $tools) {
 
 - Bash / zsh / Git Bash:
 ```bash
-for tool in jobbank-search jobdanmark-search jobindex-search jobnet-search linkedin-search; do
-  cd .agents/skills/$tool/cli && bun install && cd ../../../..
+for tool in jobbank-search jobdanmark-search jobindex-search jobnet-search linkedin-search freehire-search pracuj-search nofluffjobs-search moovijob-search jobsch-search arbetsformedlingen-search arbeitsagentur-search nav-search; do
+  cd ".agents/skills/$tool/cli" && bun install && cd ../../../..
 done
 ```
 
-For `linkedin-search` the install is optional: it has zero runtime dependencies and runs with plain `bun`; `bun install` only pulls TypeScript dev types.
+All of these have zero npm runtime dependencies - `bun install` only pulls TypeScript dev types, so it's safe to skip if you'd rather run a tool straight from source. Two exceptions need `curl` on your `PATH` instead (`pracuj-search`, `moovijob-search` - both sites' Cloudflare protection blocks Bun's native `fetch()`); `curl` ships by default on Windows 10+, macOS, and virtually every Linux distribution.
 
-If you're outside Denmark, you can generate an equivalent search skill for your local job board with `/add-portal` — it scaffolds the same CLI structure for any public portal and test-runs a live query before registering. See the "Job search tools" section in the README.
+If your market isn't covered yet, you can generate an equivalent search skill for your local job board with `/add-portal` — it scaffolds the same CLI structure for any public portal and test-runs a live query before registering. See the "Job search tools" section in the README.
 
 ## 4. Run the setup interview
 
@@ -168,13 +168,15 @@ All three paths produce the same result: fully populated profile files.
 | File | Content |
 |------|---------|
 | `CLAUDE.md` | Your full candidate profile |
-| `01-candidate-profile.md` | Structured education, experience, skills |
-| `02-behavioral-profile.md` | Behavioral assessment |
-| `04-job-evaluation.md` | Personalized skill match areas and career goals |
-| `05-cv-templates.md` | Profile statement templates for your background |
-| `07-interview-prep.md` | STAR examples from your experience |
+| `personal/01-candidate-profile.md` | Structured education, experience, skills |
+| `personal/02-behavioral-profile.md` | Behavioral assessment |
+| `personal/04-job-evaluation-criteria.md` | Personalized skill match areas and career goals |
+| `personal/05-profile-statements.md` | Profile statement templates for your background |
+| `personal/07-star-examples.md` | STAR examples from your experience |
 | `cv/main_example.tex` | Your LaTeX CV with actual details |
-| `search-queries.md` | Job search queries for `/scrape` |
+| `personal/job-scraper-search-queries.md` | Job search queries for `/scrape` |
+
+All of the `personal/*.md` files are gitignored - your real data never ends up in a commit. The tracked files with the same numbers (`01-candidate-profile.md`, etc.) stay as generic templates; see "Where your data actually lives" in the README for how the two connect.
 
 ### Re-running setup
 

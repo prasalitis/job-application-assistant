@@ -62,10 +62,12 @@ cd ai-job-search
 
 ### 2. Install job search tools
 
-PowerShell:
+The repo ships dedicated portal skills for several markets, plus two country-agnostic options (`linkedin-search`, `freehire-search`). Install whichever apply to your search — you don't need all of them. See [Job search tools](#job-search-tools) below for what covers your market.
+
+PowerShell (installs everything shipped):
 
 ```powershell
-$tools = @("jobbank-search", "jobdanmark-search", "jobindex-search", "jobnet-search", "linkedin-search")
+$tools = @("jobbank-search", "jobdanmark-search", "jobindex-search", "jobnet-search", "linkedin-search", "freehire-search", "pracuj-search", "nofluffjobs-search", "moovijob-search", "jobsch-search", "arbetsformedlingen-search", "arbeitsagentur-search", "nav-search")
 foreach ($tool in $tools) {
   Set-Location ".agents/skills/$tool/cli"
   bun install
@@ -76,14 +78,12 @@ foreach ($tool in $tools) {
 Bash / zsh / Git Bash:
 
 ```bash
-cd .agents/skills/jobbank-search/cli && bun install && cd ../../../..
-cd .agents/skills/jobdanmark-search/cli && bun install && cd ../../../..
-cd .agents/skills/jobindex-search/cli && bun install && cd ../../../..
-cd .agents/skills/jobnet-search/cli && bun install && cd ../../../..
-cd .agents/skills/linkedin-search/cli && bun install && cd ../../../..
+for tool in jobbank-search jobdanmark-search jobindex-search jobnet-search linkedin-search freehire-search pracuj-search nofluffjobs-search moovijob-search jobsch-search arbetsformedlingen-search arbeitsagentur-search nav-search; do
+  cd ".agents/skills/$tool/cli" && bun install && cd ../../../..
+done
 ```
 
-For `linkedin-search` the install is optional: it has zero runtime dependencies and runs with plain `bun`; `bun install` only pulls TypeScript dev types.
+All of these have zero npm runtime dependencies — `bun install` only pulls TypeScript dev types, so it's safe to skip if you'd rather run them straight from source. Two exceptions need a system dependency instead of an npm one: `pracuj-search` and `moovijob-search` shell out to `curl` (both sites' Cloudflare protection blocks Bun's native `fetch()`), so those two need `curl` on your `PATH` — it ships by default on Windows 10+, macOS, and virtually every Linux distribution.
 
 ### 3. Set up your profile
 
@@ -160,12 +160,20 @@ ai-job-search/
 │   │   ├── job-scraper/               # Job search orchestration
 │   │   └── upskill/                   # /upskill skill gap analysis and learning plan
 │   └── settings.json                  # Claude Code permissions (shared, scoped)
-├── .agents/skills/                    # Job portal CLI tools
+├── .agents/skills/                    # Job portal CLI tools + Vibe command mirrors
 │   ├── jobbank-search/                # Akademikernes Jobbank (Denmark)
 │   ├── jobdanmark-search/             # Jobdanmark.dk (Denmark)
 │   ├── jobindex-search/               # Jobindex.dk (Denmark)
 │   ├── jobnet-search/                 # Jobnet.dk (Denmark, government portal)
-│   └── linkedin-search/               # LinkedIn public job listings (country-agnostic)
+│   ├── linkedin-search/               # LinkedIn public job listings (country-agnostic)
+│   ├── freehire-search/               # freehire.dev aggregator, ~50 ATS platforms (many markets)
+│   ├── pracuj-search/                 # Pracuj.pl (Poland)
+│   ├── nofluffjobs-search/            # No Fluff Jobs (Poland + CEE)
+│   ├── moovijob-search/                # Moovijob.com (Luxembourg)
+│   ├── jobsch-search/                  # jobs.ch (Switzerland)
+│   ├── arbetsformedlingen-search/       # Platsbanken via the JobTech Dev API (Sweden)
+│   ├── arbeitsagentur-search/           # Bundesagentur für Arbeit Jobsuche API (Germany)
+│   └── nav-search/                     # NAV Arbeidsplassen (Norway)
 ├── cv/
 │   └── main_example.tex               # moderncv LaTeX template
 ├── cover_letters/
@@ -233,6 +241,18 @@ If you prefer editing files directly instead of using `/setup`:
 | `07-interview-prep.md` | Your STAR examples from actual experience |
 | `search-queries.md` | Job search queries for your skills and location |
 
+### Where your data actually lives: the `personal/` folder
+
+`/setup` and the other commands don't write your real data into the tracked files listed above — they write it into a gitignored `personal/` folder instead (`personal/01-candidate-profile.md`, `personal/job-scraper-search-queries.md`, etc.). The tracked files (`01-candidate-profile.md` and friends) stay generic `[PLACEHOLDER]` templates; each one carries a comment pointing at its `personal/` counterpart, so Claude reads your real data from there but the file you'd `git diff` or commit never changes.
+
+This means:
+
+- **Your data can never accidentally end up in a commit or a PR**, even if you forget it's there — it's gitignored by construction, not by discipline.
+- **You can freely pull upstream updates or contribute changes back** without ever having to separate your personal content from the framework changes first — they're already in different files.
+- If you're scripting around this repo yourself, `tools/resolve-doc.ts --primary personal/X --fallback <generic path>` is the same deterministic lookup the commands use — it returns whichever file actually exists, personal-first.
+
+You don't need to think about this in normal use; it's transparent through `/setup`, `/expand`, and the other commands. It only matters if you're editing files by hand (edit the `personal/` copy, not the tracked one) or wondering why `git status` looks unexpectedly clean after `/setup`.
+
 ### Updating your search queries
 
 As your priorities evolve, you can reconfigure just the job search without re-running the full profile setup:
@@ -263,7 +283,21 @@ If you prefer doing it by hand, the manual route still works: update the guidanc
 
 ### Job search tools
 
-The four Danish CLI tools in `.agents/skills/` (Jobbank, Jobdanmark, Jobindex, Jobnet) demonstrate the pattern for building a job-portal integration for a specific market. If you're in a different country, run:
+Dedicated CLI portal skills currently ship for:
+
+| Market | Skill(s) | Notes |
+|--------|----------|-------|
+| Denmark | `jobbank-search`, `jobdanmark-search`, `jobindex-search`, `jobnet-search` | The original worked examples of the portal-skill pattern |
+| Poland | `pracuj-search`, `nofluffjobs-search` | `pracuj-search` needs `curl` (see [Install job search tools](#2-install-job-search-tools)); `nofluffjobs-search` also covers Hungary, Czech Republic, Slovakia, Netherlands, Ukraine, and Albania |
+| Luxembourg | `moovijob-search` | Luxembourg only — despite the common grouping, this portal has no Belgium content. Needs `curl`. |
+| Switzerland | `jobsch-search` | jobs.ch's `robots.txt` disallows automated access to individual job-detail pages; this skill's `detail` command fetches them anyway on a personal-use basis (same judgment call as `linkedin-search` below) — see its `SKILL.md` for the full note |
+| Sweden | `arbetsformedlingen-search` | Backed by Sweden's official JobTech Dev government open-data API — not a scraped site |
+| Germany | `arbeitsagentur-search` | Backed by the Bundesagentur für Arbeit's public Jobsuche API |
+| Norway | `nav-search` | NAV Arbeidsplassen; detail parsing relies on Next.js's React Server Components streaming format, more fragile than the others — see its `url-reference.md` if it ever stops returning descriptions |
+
+Each has its own `SKILL.md` (usage, flags, examples) and `url-reference.md` (how the data source works, for future maintenance) alongside the CLI.
+
+If your market isn't covered yet, run:
 
 ```
 /add-portal
@@ -273,7 +307,10 @@ Give it your local job board's URL. The command investigates the portal (search-
 
 Maintaining a fork adapted to your market or language? Add it to the [Community forks & adaptations](https://github.com/MadsLorentzen/ai-job-search/discussions/78) thread so others can find it.
 
-For a **country-agnostic** starting point, the repo also includes **`linkedin-search`** — a job-search skill built on LinkedIn's public, unauthenticated `jobs-guest` endpoints. It is field-agnostic, has **zero runtime dependencies** (runs with just `bun`), and takes the search location as an explicit flag, so it works for any market out of the box (`-l "Berlin, Germany"`, `-l "Mumbai, Maharashtra, India"`, `-l "Remote"`, …). It is intended for **personal use only** — automated access is against LinkedIn's Terms of Service, so keep volume low. See `.agents/skills/linkedin-search/SKILL.md`.
+For **country-agnostic** starting points, the repo also includes:
+
+- **`linkedin-search`** — built on LinkedIn's public, unauthenticated `jobs-guest` endpoints. Field-agnostic, zero runtime dependencies, takes the search location as an explicit flag (`-l "Berlin, Germany"`, `-l "Mumbai, Maharashtra, India"`, `-l "Remote"`, …). **Personal use only** — automated access is against LinkedIn's Terms of Service, so keep volume low. See `.agents/skills/linkedin-search/SKILL.md`.
+- **`freehire-search`** — aggregates roles from ~50 ATS platforms into one schema via the freehire.dev API, with facet filters (`--country`, `--region`, `--category`, `--skill`, `--remote`, …) covering many markets at once. Its faceted filtering is tuned tech-first, but free-text queries surface non-tech roles well too. See `.agents/skills/freehire-search/SKILL.md`.
 
 ### Salary benchmarking
 
