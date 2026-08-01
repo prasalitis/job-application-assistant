@@ -356,6 +356,55 @@ Thinking about a PR? Read [CONTRIBUTING.md](CONTRIBUTING.md) first - it explains
 - [Mikkel Krogholm](https://github.com/mikkelkrogsholm) ([skills repo](https://github.com/mikkelkrogsholm/skills)) for the job search CLI skills
 - Built with [Claude Code](https://claude.com/claude-code) by [Anthropic](https://anthropic.com)
 
+## What's Different from Upstream
+
+This fork (`prasalitis/job-application-assistant`) extends the original [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search) repository with the following key differences:
+
+### Architecture
+- **Personal data privacy split:** Real candidate data has been moved out of git-tracked skill files (like `01-candidate-profile.md`) into a gitignored `personal/` directory. The `tools/resolve-doc.ts` script provides deterministic path resolution, reading from `personal/` first and falling back to generic templates. This allows the repository to be safely published without exposing personal information.
+- **Vibe-native skills:** In addition to the Claude Code `.claude/commands/` and `.claude/skills/`, this fork includes `.agents/skills/` with Vibe-compatible command mirrors. These follow the same portal-skill contract (search/detail commands, same JSON output shape, same error convention) but are optimized for Mistral Vibe.
+
+### Additional Features
+- **International portal coverage:** Added job search CLI skills for additional markets: Poland (`pracuj-search`, `nofluffjobs-search`), Luxembourg (`moovijob-search`), Switzerland (`jobsch-search`), Sweden (`arbetsformedlingen-search`), Germany (`arbeitsagentur-search`), and Norway (`nav-search`).
+- **New commands:** Added `/html-report` command to generate a self-contained HTML dashboard from application tracking data.
+- **Enhanced ranking:** The `/rank` command now persists triage strengths and gaps into `seen_jobs.json` for downstream consumption.
+
+### Credits
+The original ai-job-search project was created by [Mads Lorentzen](https://github.com/MadsLorentzen). This fork builds upon that foundation while adding Vibe support and international portal coverage.
+
+## Mistral Vibe Usage
+
+This repository supports both Claude Code and Mistral Vibe. For Vibe users:
+
+### Command Structure
+- **`.agents/skills/`** contains Vibe-native skills that mirror the Claude Code commands in `.claude/commands/`
+- Each skill in `.agents/skills/` follows the same contract as its Claude Code counterpart:
+  - Same portal-skill interface (search/detail commands)
+  - Same JSON output shape
+  - Same error convention (stderr with JSON `{error, code}`)
+
+### Which to Use?
+- **Claude Code users:** Use `.claude/commands/` (e.g., `/apply`, `/scrape`, `/rank`)
+- **Vibe users:** Use `.agents/skills/` (e.g., the `apply`, `job-scraper`, `rank` skills)
+
+### Vibe-Specific Tools
+- **`tools/resolve-doc.ts`:** Deterministic path resolver for personal data files. Always reads from `personal/` first, falls back to generic templates.
+- **`.vibe/` directory:** Contains Vibe-specific agent configurations and prompts
+
+### Example Vibe Workflow
+```
+# Search for jobs
+Use the jobindex-search skill
+
+# Apply to a job
+Use the apply skill with the job URL
+
+# Generate a report
+Use the html-report skill
+```
+
+> Note: This project has **no affiliated cryptocurrency, token, or paid sponsorship program**. Anything claiming otherwise is unauthorized and should be treated as a scam. The only ways to support the project are contributing on GitHub.
+
 ## License
 
 MIT

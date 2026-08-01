@@ -75,7 +75,7 @@ task(
 )
 ```
 
-Each call returns a JSON array per its own system prompt format (see `.vibe/prompts/job-scorer.md`).
+Each call returns a JSON array per its own system prompt format (see `.vibe/prompts/job-scorer.md`). Each scored job includes `strengths` and `gaps` arrays (1-3 bullets each, grounded in the posting text).
 
 ---
 
@@ -96,8 +96,10 @@ Sort by overall score (descending), urgency as tiebreaker.
 
 Update `job_scraper/seen_jobs.json` in place via `edit` - these fields are additive to the scraper's schema:
 
-- Ranked jobs: set `"status": "ranked"` and add `"rank_score": <overall>`, `"rank_verdict": "<band>"`, `"rank_date": "YYYY-MM-DD"`
+- Ranked jobs: set `"status": "ranked"` and add `"rank_score": <overall>`, `"rank_verdict": "<band>"`, `"rank_date": "YYYY-MM-DD"`, plus `"strengths": [...]` and `"gaps": [...]` copied verbatim from the scoring subagent's response for that job
 - Dead or past-deadline jobs: set `"status": "expired"`
+
+Store both arrays **verbatim** as the subagent returned them (1-3 bullets each) - never expand to prose, never reformat. `--all` re-scoring **replaces** both arrays with the fresh ones; they never accumulate across runs.
 
 Do not modify `job_search_tracker.csv` - that file records applications, and `/rank` never applies. Re-running `/rank` is idempotent: already-`ranked` jobs are skipped unless `--all` re-scores them.
 
@@ -117,7 +119,7 @@ Ranked <N> new postings (<X> shortlisted, <Y> below threshold, <Z> expired/vetoe
 | 1 | 78 | Strong Fit | ... | ... | ... | ... | 🔥 |
 
 ### Why these ranked highest
-**1. <Title> at <Company> (78)** - [2-3 strength bullets and the honest gap]
+**1. <Title> at <Company> (78)** - [2-3 strength bullets from the agent's findings] | Gaps: [1-3 honest gap bullets from the agent's findings]
 [repeat for each shortlisted job]
 
 ### Below threshold

@@ -43,17 +43,37 @@ ALLOWED_PERMISSIONS = {
 # Personal-data ignore rules that must never disappear from .gitignore.
 REQUIRED_IGNORE_RULES = [
     "salary_data.json",
-    "job_scraper/seen_jobs.json",
-    "cv/main_*.tex",
+    # Depth-independent: the job-scraper skill resolves `job_scraper/` relative
+    # to its own directory, so the state file lands under .claude/skills/... and
+    # a repo-rooted rule silently fails to match it.
+    "**/job_scraper/seen_jobs.json",
+    # Extension-agnostic: custom templates (e.g. Typst) write main_<company>_<role>.typ
+    "cv/main_*.*",
     "!cv/main_example.tex",
-    "cover_letters/cover_*.tex",
+    "cover_letters/cover_*.*",
+    "cover_letters/Cover_*.*",
     "documents/cv/**",
     "documents/linkedin/**",
     "documents/diplomas/**",
     "documents/references/**",
     "documents/applications/**",
+    "documents/interview/**",
     "job_search_tracker.csv",
 ]
+
+# Negation (re-include) rules the template legitimately ships. .gitignore is
+# order-sensitive: a later `!pattern` re-includes a path an earlier rule
+# excluded, so a rule can be physically present in REQUIRED_IGNORE_RULES yet
+# no longer ignored (e.g. adding `!salary_data.json`). Set membership on the
+# required rules cannot see that. Any negation outside this allowlist is a
+# failure - add an intentional one here in the same PR, exactly as with
+# ALLOWED_PERMISSIONS, so the widening is explicit and reviewable.
+ALLOWED_IGNORE_NEGATIONS = {
+    "!cover_letters/OpenFonts/fonts/**",
+    "!cv/main_example.tex",
+    "!cover_letters/cover_example.tex",
+    "!documents/**/.gitkeep",
+}
 
 FORBIDDEN_SCRIPTS = {"preinstall", "install", "postinstall", "prepare", "prepack"}
 
@@ -65,7 +85,17 @@ def check_permissions() -> None:
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f".claude/settings.json: unreadable or invalid JSON: {exc}")
         return
-    allow = data.get("permissions", {}).get("allow", [])
+    if not isinstance(data, dict):
+        errors.append(".claude/settings.json: top-level JSON value must be an object")
+        return
+    permissions = data.get("permissions", {})
+    if not isinstance(permissions, dict):
+        errors.append(".claude/settings.json: permissions must be an object")
+        return
+    allow = permissions.get("allow", [])
+    if not isinstance(allow, list) or not all(isinstance(entry, str) for entry in allow):
+        errors.append(".claude/settings.json: permissions.allow must be a list of strings")
+        return
     for entry in allow:
         if entry not in ALLOWED_PERMISSIONS:
             errors.append(
@@ -83,10 +113,11 @@ def check_permissions() -> None:
 def check_gitignore() -> None:
     path = ROOT / ".gitignore"
     try:
-        rules = {line.strip() for line in path.read_text(encoding="utf-8").splitlines()}
+        lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines()]
     except OSError as exc:
         errors.append(f".gitignore: unreadable: {exc}")
         return
+    rules = set(lines)
     for rule in REQUIRED_IGNORE_RULES:
         if rule not in rules:
             errors.append(
@@ -94,6 +125,15 @@ def check_gitignore() -> None:
                 "These rules keep fork users from committing personal data. If the rule moved "
                 "or was renamed intentionally, update REQUIRED_IGNORE_RULES in "
                 "tools/security_guards.py in the same PR."
+            )
+    for line in lines:
+        if line.startswith("!") and line not in ALLOWED_IGNORE_NEGATIONS:
+            errors.append(
+                f".gitignore: negation rule not in the reviewed allowlist: {line!r}. "
+                "A negation re-includes a path an earlier rule excluded and can silently "
+                "re-expose personal data (a required ignore rule stays present but stops "
+                "taking effect). If this negation is intentional, add it to "
+                "ALLOWED_IGNORE_NEGATIONS in tools/security_guards.py in the same PR."
             )
 
 
@@ -110,7 +150,14 @@ def check_package_manifests() -> None:
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"{relpath}: unreadable or invalid JSON: {exc}")
             continue
-        bad = FORBIDDEN_SCRIPTS & set(data.get("scripts", {}))
+        if not isinstance(data, dict):
+            errors.append(f"{relpath}: top-level JSON value must be an object")
+            continue
+        scripts = data.get("scripts", {})
+        if not isinstance(scripts, dict):
+            errors.append(f"{relpath}: scripts must be an object")
+            continue
+        bad = FORBIDDEN_SCRIPTS & set(scripts)
         if bad:
             errors.append(
                 f"{relpath}: lifecycle script(s) {sorted(bad)} are forbidden - they execute "

@@ -16,7 +16,7 @@ async function apiFetch(path: string): Promise<unknown> {
   const maxRetries = 6
   let delay = 500
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(`${API_BASE}${path}`, { headers: { Accept: "application/json" } })
+    const response = await fetch(`${API_BASE}${path}`, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(15000) })
     if (response.status === 429 || response.status >= 500) {
       if (attempt === maxRetries) throw new Error(`Request failed: ${response.status} ${response.statusText}`)
       const jitter = Math.floor(Math.random() * 500)

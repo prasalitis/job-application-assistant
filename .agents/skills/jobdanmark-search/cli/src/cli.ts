@@ -17,4 +17,18 @@ cli.command(categories)
 cli.command(autocomplete)
 cli.command(locations)
 
-await cli.run()
+const main = async () => {
+  await cli.run()
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    process.stderr.write(
+      JSON.stringify({
+        error: e instanceof Error ? e.message : String(e),
+        code: "INTERNAL_ERROR",
+      }) + "\n",
+    )
+    process.exit(1)
+  })

@@ -11,4 +11,18 @@ const cli = await createCLI({
 cli.command(search)
 cli.command(detail)
 
-await cli.run()
+const main = async () => {
+  await cli.run()
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    process.stderr.write(
+      JSON.stringify({
+        error: e instanceof Error ? e.message : String(e),
+        code: "INTERNAL_ERROR",
+      }) + "\n",
+    )
+    process.exit(1)
+  })

@@ -28,7 +28,7 @@ async function fetchWithBackoff(url: string, headers: Record<string, string>): P
   const maxRetries = 6
   let delay = 500
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, signal: AbortSignal.timeout(15000) })
     if (response.status === 429 || response.status >= 500) {
       if (attempt === maxRetries) throw new Error(`Request failed: ${response.status} ${response.statusText}`)
       const jitter = Math.floor(Math.random() * 500)

@@ -1,11 +1,11 @@
 {
-  "name": "jobdanmark-cli",
+  "name": "html-report-cli",
   "version": "1.0.0",
-  "description": "CLI for the Jobdanmark.dk public job search API",
+  "description": "Generate HTML application tracker dashboard from job search data",
   "type": "module",
   "main": "src/cli.ts",
   "bin": {
-    "jobdanmark": "src/cli.ts"
+    "html-report": "src/cli.ts"
   },
   "scripts": {
     "start": "bun run src/cli.ts",
@@ -14,12 +14,11 @@
   },
   "dependencies": {
     "@bunli/core": "0.9.1",
-    "@bunli/utils": "0.6.0",
-    "node-html-parser": "^6.1.0",
+    "node-html-parser": "^6.1.13",
     "zod": "^3.23.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@types/bun": "1.3.14"
+    "@types/bun": "1.3.14",
+    "typescript": "^5.4.0"
   }
 }

@@ -26,6 +26,7 @@ export async function htmlFetch(url: string): Promise<string> {
         "Accept-Language": "en-US,en;q=0.9",
       },
       redirect: "follow",
+      signal: AbortSignal.timeout(15000),
     });
     if (response.status === 429 || response.status >= 500) {
       if (attempt === maxRetries) {
