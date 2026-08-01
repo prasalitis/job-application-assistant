@@ -80,10 +80,13 @@ describe("Jobnet CLI flag validation", () => {
   test("valid numeric flags pass schema validation", async () => {
     const result = await runCLI(["search", "--page=2", "--limit=5"]);
 
-    // Should not fail validation, but may fail for other reasons (no network)
-    // The key is it doesn't hang and doesn't fail with VALIDATION_ERROR
-    expect(result.exitCode).not.toBe(0); // Will fail because no network, but not validation
-    const error = JSON.parse(result.stderr);
-    expect(error.code).not.toBe("VALIDATION_ERROR");
+    // Valid flags must never trigger the manual VALIDATION_ERROR path. The CLI
+    // may still succeed (real network call) or fail for an unrelated reason
+    // depending on network availability in the test environment - only a
+    // VALIDATION_ERROR on these valid inputs would indicate a real bug.
+    if (result.exitCode !== 0) {
+      const error = JSON.parse(result.stderr);
+      expect(error.code).not.toBe("VALIDATION_ERROR");
+    }
   });
 });
