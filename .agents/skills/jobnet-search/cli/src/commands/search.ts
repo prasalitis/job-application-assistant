@@ -91,6 +91,40 @@ export const search = defineCommand({
   handler: async ({ flags, signal }) => {
     if (signal.aborted) return
 
+    // Manual validation for numeric flags - must happen before any network calls
+    // to ensure tests are network-free and validation errors use {error, code} shape
+    if (flags.page !== undefined) {
+      const pageNum = Number(flags.page)
+      if (!Number.isInteger(pageNum) || pageNum < 1) {
+        writeError("--page must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
+    if (flags["per-page"] !== undefined) {
+      const perPageNum = Number(flags["per-page"])
+      if (!Number.isInteger(perPageNum) || perPageNum < 1) {
+        writeError("--per-page must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
+    if (flags.limit !== undefined) {
+      const limitNum = Number(flags.limit)
+      if (!Number.isInteger(limitNum) || limitNum < 1) {
+        writeError("--limit must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
+    if (flags.radius !== undefined) {
+      const radiusNum = Number(flags.radius)
+      if (!Number.isInteger(radiusNum) || radiusNum < 0) {
+        writeError("--radius must be a non-negative integer (>= 0)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
     const params: Record<string, string> = {
       resultsPerPage: String(flags["per-page"]),
       pageNumber: String(flags.page),

@@ -36,6 +36,15 @@ export const occupations = defineCommand({
       process.exit(1)
     }
 
+    // Manual validation for per-page
+    if (flags["per-page"] !== undefined) {
+      const perPageNum = Number(flags["per-page"])
+      if (!Number.isInteger(perPageNum) || perPageNum < 1) {
+        writeError("--per-page must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
     const params: Record<string, string> = {
       searchString: flags["search-string"],
       pageSize: String(flags["per-page"]),

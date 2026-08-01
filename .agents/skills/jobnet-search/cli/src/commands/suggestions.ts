@@ -24,6 +24,15 @@ export const suggestions = defineCommand({
       process.exit(1)
     }
 
+    // Manual validation for limit
+    if (flags.limit !== undefined) {
+      const limitNum = Number(flags.limit)
+      if (!Number.isInteger(limitNum) || limitNum < 1) {
+        writeError("--limit must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
     const params: Record<string, string> = {
       query: flags.query,
     }

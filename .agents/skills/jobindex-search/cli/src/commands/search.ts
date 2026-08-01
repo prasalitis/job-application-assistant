@@ -32,6 +32,25 @@ export const search = defineCommand({
       process.exit(1)
     }
 
+    // Manual validation for numeric flags - bunli's Zod validation outputs
+    // {ok: false, error: {...}} which doesn't match this repo's {error, code} convention.
+    // Validate here before any network calls.
+    if (flags.page !== undefined) {
+      const pageNum = Number(flags.page)
+      if (!Number.isInteger(pageNum) || pageNum < 1) {
+        writeError("--page must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
+    if (flags.limit !== undefined) {
+      const limitNum = Number(flags.limit)
+      if (!Number.isInteger(limitNum) || limitNum < 1) {
+        writeError("--limit must be a positive integer (>= 1)", "VALIDATION_ERROR")
+        process.exit(1)
+      }
+    }
+
     if (signal.aborted) return
 
     const params = new URLSearchParams({
