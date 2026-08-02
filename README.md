@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/prasalitis/job-application-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/prasalitis/job-application-assistant/actions/workflows/ci.yml)
 
-An AI-powered job application framework built on [Claude Code](https://claude.com/claude-code) and [Mistral Vibe](https://mistral.ai). Fork it, fill in your profile, and let Claude evaluate job postings, tailor your CV, write cover letters, and prepare you for interviews.
+An AI-powered job application framework built on [Claude Code](https://claude.com/claude-code) and [Mistral Vibe](https://mistral.ai). Fork it, fill in your profile, and let it evaluate job postings, tailor your CV, write cover letters, and prepare you for interviews.
 
 > Note: This is an independent open-source project and is not affiliated with, endorsed by, sponsored by, or maintained by Anthropic or Mistral. Anthropic/Claude Code and Mistral/Vibe are referenced only to describe the toolchains this workflow supports.
 
@@ -82,11 +82,15 @@ All of these have zero npm runtime dependencies — `bun install` only pulls Typ
 
 ### 3. Set up your profile
 
+Claude Code:
+
 ```bash
 claude
 # Then inside Claude Code:
 /setup
 ```
+
+Mistral Vibe: open a Vibe session in this repo and invoke the `setup` skill (e.g. "run setup"). The steps below use `/command` as shorthand for both — see [Mistral Vibe Usage](#mistral-vibe-usage) for the skill-name equivalents.
 
 `/setup` offers three paths: read your `documents/` folder if you have one populated (CV PDF, LinkedIn export, diplomas, reference letters, past applications), import a single CV pasted in chat, or walk through an interview. It auto-detects what you have and asks. Documents-folder mode is idempotent and safe to re-run as you add more material; see `documents/README.md` for the layout.
 
@@ -120,7 +124,7 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 - **`/outcome`** records what happened to an application - interview stages, offers, rejections, silence. It archives the submitted CV, cover letter, and posting text into `documents/applications/<company>_<role>/`, keeps `outcome.md` in the format `/setup` Path A parses, and updates the tracker. Once a few applications resolve, it points you back to `/setup` to calibrate the fit framework from what actually got interviews.
 - **`/rank`** bridges `/scrape` and `/apply`: it batch-scores all newly scraped postings against the fit framework (parallel agents fetch each posting and score the five evaluation dimensions) and returns a ranked shortlist with honest per-job strengths and gaps. Deal-breakers veto, deadlines get urgency flags, dead postings get marked expired. Pick a number and it hands off to the full `/apply` workflow.
 - **`/expand`** enriches your profile by scanning public sources you've already linked in it (GitHub repos, portfolio site, Kaggle, Google Scholar) and looking up syllabi for named courses and certifications. Discovered competencies are added to your profile with a source tag. Useful right after `/setup` to surface skills that documents alone don't make explicit.
-- **`/upskill`** analyzes the gap between your profile and your tracked job postings (or a single posting via `/upskill <URL>`). Produces a prioritized heatmap of skill gaps and a learning plan with web-searched study resources and time estimates. Useful for career planning between applications.
+- **`/upskill`** analyzes the gap between your profile and your tracked job postings (or a single posting via `/upskill <URL>`). Produces a prioritized heatmap of skill gaps and a learning plan with web-searched study resources and time estimates. Useful for career planning between applications. **Claude Code only** — no Vibe port exists yet.
 - **`/add-template`** registers your own LaTeX CV or cover letter template in place of the stock ones. It captures the template's instructions (compile engine, fonts, style rules, page limit), runs a mandatory test compile, and wires the template into `/apply`. See [LaTeX templates](#latex-templates) below.
 - **`/add-portal`** generates a job-portal search skill for a job board in your market. It investigates the portal (search URL pattern, result structure, access rules), scaffolds the CLI skill from the same structure as the shipped ones, and test-runs a live query before registering. See [Job search tools](#job-search-tools) below.
 
@@ -229,7 +233,7 @@ The `/apply` command runs a **drafter-reviewer workflow** with mandatory PDF com
 3. **Draft** a tailored CV and cover letter in LaTeX
 4. **Spawn a reviewer agent** that researches the company and critiques the drafts
 5. **Revise** based on the reviewer's feedback
-6. **Compile and inspect** both PDFs: lualatex for the CV, xelatex for the cover letter. Claude reads the rendered pages and iterates on the LaTeX until the CV is exactly 2 pages with no orphaned entry titles, and the cover letter is exactly 1 page with the signature visible and fonts consistent.
+6. **Compile and inspect** both PDFs: lualatex for the CV, xelatex for the cover letter. The agent reads the rendered pages and iterates on the LaTeX until the CV is exactly 2 pages with no orphaned entry titles, and the cover letter is exactly 1 page with the signature visible and fonts consistent.
 7. **ATS-check the CV**: extract the PDF's text layer (`pdftotext`, optional dependency) and verify it the way an ATS parser sees it — contact details present as literal text, no garbled glyphs, sane reading order — then score the posting's keyword coverage against the extraction. Keywords the profile genuinely supports get added; genuine gaps stay visible, never stuffed.
 8. **Present** the final output with a verification checklist
 
@@ -240,28 +244,14 @@ All claims in the CV and cover letter are verified against your actual profile. 
 - **PDF verification loop.** Most LaTeX-resume templates produce "looks fine in the .tex" output that breaks in the PDF: job titles orphan to the next page, cover letters spill onto page 2, bullet fonts silently fall back to the body font. The `/apply` command compiles and visually inspects every PDF and applies targeted fixes (`\needspace`, `\enlargethispage`, font-matching wrappers for list items) until the layout is clean. This runs automatically on every application.
 - **ATS verification on the PDF text layer.** An ATS reads the PDF's embedded text, not the rendered page — and LaTeX can silently produce PDFs whose text extracts as garbage (icon glyphs where the email should be, interleaved lines from multi-column layouts). `/apply` extracts the compiled CV's text layer with `pdftotext` and verifies contact details, reading order, and the posting's keyword coverage against what a parser actually sees. Honesty rule enforced: a keyword the profile doesn't support is acknowledged as a gap, never stuffed in.
 - **Relevance-weighted CV cutting.** When a CV overflows 2 pages, the workflow does not cut mechanically from the "oldest" section. It scores each candidate line by (a) relevance to the target posting, (b) uniqueness in the document, and (c) whether the cover letter depends on it, and cuts the lowest-total-score line first. An older-role bullet that hits posting keywords survives ahead of a recent-role bullet that does not.
-- **Drafter-reviewer separation.** The drafter writes; a second Claude agent, spawned with a fresh context, researches the company and critiques the drafts. The drafter then revises. This catches missed keywords, weak framing, and generic language that a single pass often leaves in.
+- **Drafter-reviewer separation.** The drafter writes; a second agent, spawned with a fresh context, researches the company and critiques the drafts. The drafter then revises. This catches missed keywords, weak framing, and generic language that a single pass often leaves in. (Claude Code spawns a Claude subagent for this; Vibe uses its own `app-reviewer` subagent, configured in `.vibe/agents/` on a Mistral model — same role, independent implementation per agent.)
 - **Token-efficient reviewer dispatch.** The reviewer agent receives drafts inline rather than re-reading them, and the verification checklist runs once at the end of the workflow rather than being duplicated by both agents. Note: the new compile-and-inspect step in Step 5 spends some of those savings on PDF rendering and layout iteration — the workflow trades some end-to-end token cost for a real reduction in broken PDFs reaching the user.
 
 ## Customization
 
-### Which files to edit manually
-
-If you prefer editing files directly instead of using `/setup`:
-
-| File | What to change |
-|------|---------------|
-| `CLAUDE.md` | Your full profile (name, education, experience, skills, goals) |
-| `01-candidate-profile.md` | Structured version of your CV data |
-| `02-behavioral-profile.md` | Your behavioral assessment or self-assessment |
-| `04-job-evaluation.md` | Skill match areas, career goals, motivation filters |
-| `05-cv-templates.md` | Profile statement templates for different role types |
-| `07-interview-prep.md` | Your STAR examples from actual experience |
-| `search-queries.md` | Job search queries for your skills and location |
-
 ### Where your data actually lives: the `personal/` folder
 
-`/setup` and the other commands don't write your real data into the tracked files listed above — they write it into a gitignored `personal/` folder instead (`personal/01-candidate-profile.md`, `personal/job-scraper-search-queries.md`, etc.). The tracked files (`01-candidate-profile.md` and friends) stay generic `[PLACEHOLDER]` templates; each one carries a comment pointing at its `personal/` counterpart, so Claude reads your real data from there but the file you'd `git diff` or commit never changes.
+`/setup` and the other commands don't write your real data into the tracked skill files — they write it into a gitignored `personal/` folder instead (`personal/01-candidate-profile.md`, `personal/job-scraper-search-queries.md`, etc.). The tracked files (`01-candidate-profile.md` and friends, under `.claude/skills/job-application-assistant/`) stay generic `[PLACEHOLDER]` templates; each one carries a comment pointing at its `personal/` counterpart, so the agent reads your real data from there but the file you'd `git diff` or commit never changes.
 
 This means:
 
@@ -269,7 +259,19 @@ This means:
 - **You can freely pull upstream updates or contribute changes back** without ever having to separate your personal content from the framework changes first — they're already in different files.
 - If you're scripting around this repo yourself, `tools/resolve-doc.ts --primary personal/X --fallback <generic path>` is the same deterministic lookup the commands use — it returns whichever file actually exists, personal-first.
 
-You don't need to think about this in normal use; it's transparent through `/setup`, `/expand`, and the other commands. It only matters if you're editing files by hand (edit the `personal/` copy, not the tracked one) or wondering why `git status` looks unexpectedly clean after `/setup`.
+You don't need to think about this in normal use; it's transparent through `/setup`, `/expand`, and the other commands. It only matters if you're editing files by hand, or wondering why `git status` looks unexpectedly clean after `/setup`.
+
+**If you prefer editing files directly instead of using `/setup`, edit the `personal/` path — never the generic tracked file next to it:**
+
+| Edit this (`personal/...`) | Not this (tracked template) | What to change |
+|---|---|---|
+| `personal/01-candidate-profile.md` | `01-candidate-profile.md` | Structured version of your CV data |
+| `personal/02-behavioral-profile.md` | `02-behavioral-profile.md` | Your behavioral assessment or self-assessment |
+| `personal/04-job-evaluation-criteria.md` | `04-job-evaluation.md` | Skill match areas, career goals, motivation filters |
+| `personal/05-profile-statements.md` | `05-cv-templates.md` | Profile statement templates for different role types |
+| `personal/07-star-examples.md` | `07-interview-prep.md` | Your STAR examples from actual experience |
+| `personal/job-scraper-search-queries.md` | `search-queries.md` | Job search queries for your skills and location |
+| `CLAUDE.md` (Claude Code) / `AGENTS.md` (Vibe) | — (no generic counterpart; edited directly, never committed) | Your full profile (name, education, experience, skills, goals) |
 
 ### Updating your search queries
 
@@ -372,7 +374,7 @@ Thinking about a PR, or wondering whether to fork this repo or [upstream](https:
 ## Acknowledgements
 
 - [Mikkel Krogholm](https://github.com/mikkelkrogsholm) ([skills repo](https://github.com/mikkelkrogsholm/skills)) for the job search CLI skills
-- Built with [Claude Code](https://claude.com/claude-code) by [Anthropic](https://anthropic.com)
+- Built with [Claude Code](https://claude.com/claude-code) by [Anthropic](https://anthropic.com), with Vibe support added in this fork using [Mistral Vibe](https://mistral.ai) by [Mistral AI](https://mistral.ai)
 
 ## What's Different from Upstream
 
