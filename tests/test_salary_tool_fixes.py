@@ -115,5 +115,116 @@ class TestColumnPairingBug(unittest.TestCase):
         self.assertEqual(categories["b"], {"count": 20, "index": 200.0})
 
 
+class TestCityColumnTokenMatch(unittest.TestCase):
+    """Test for bug fixed in commit b3b3516: city column detection with token matching"""
+
+    def test_parse_sheet_detects_city_column_with_token_header(self):
+        """City headers should be matched with header_matches(), not exact string equality.
+        Real-world sheets rarely use the bare token "City" or "Kommune" alone; headers
+        like "City Name" / "City/Kommune" must still be detected as the city column.
+        
+        This test should FAIL on current fork code (which uses exact match)
+        and PASS after applying the fix from commit b3b3516.
+        """
+        for header in ("City", "City Name", "Kommune", "City/Kommune"):
+            with self.subTest(header=header):
+                ws = FakeWorksheet([
+                    ("Company", header, "Salary"),
+                    ("Example Corp", "Aarhus", 105.5),
+                ])
+                companies = parse_sheet(ws)
+                self.assertEqual(len(companies), 1)
+                self.assertEqual(companies[0]["city"], "Aarhus")
+
+
+class TestCompanyColumnTokenMatch(unittest.TestCase):
+    """Test for bug fixed in commit 4128ca0: company column detection with token matching"""
+
+    def test_parse_sheet_detects_company_column_with_token_header(self):
+        """Company headers should be matched with header_matches(), not exact string equality.
+        Real-world sheets rarely use the bare token "Company"; headers like "Company Name"
+        or "Employer Name" must still be detected as the company column.
+        
+        This test should FAIL on current fork code (which uses exact match)
+        and PASS after applying the fix from commit 4128ca0.
+        """
+        for header in ("Company", "Company Name", "Employer Name"):
+            with self.subTest(header=header):
+                ws = FakeWorksheet([
+                    (header, "Salary"),
+                    ("Example Corp", 105.5),
+                ])
+                companies = parse_sheet(ws)
+                self.assertEqual(len(companies), 1)
+                self.assertEqual(companies[0]["company"], "Example Corp")
+                self.assertEqual(
+                    companies[0]["categories"]["salary"], {"index": 105.5}
+                )
+
+    def test_parse_sheet_detects_company_column_in_header_row_search(self):
+        """Company column detection in header row search should also use token matching.
+        
+        This test should FAIL on current fork code and PASS after the fix.
+        """
+        ws = FakeWorksheet([
+            ("Company Name", "Salary"),
+            ("Example Corp", 105.5),
+        ])
+        companies = parse_sheet(ws)
+        # If header row is not detected, companies will be empty
+        self.assertEqual(len(companies), 1)
+        self.assertEqual(companies[0]["company"], "Example Corp")
+
+
+class TestSkipNonNumericColumns(unittest.TestCase):
+    """Test for bug fixed in commit 1417e3c: skip non-numeric and identifier columns"""
+
+    def test_skips_free_text_column(self):
+        """A free-text "Notes" column must not become a bogus salary category.
+        
+        This test should FAIL on current fork code (which treats it as a category)
+        and PASS after applying the fix from commit 1417e3c.
+        """
+        ws = FakeWorksheet([
+            ("Company", "Salary Index", "Notes"),
+            ("Example Corp", 105.5, "good"),
+        ])
+
+        companies = parse_sheet(ws)
+
+        self.assertIn("salary_index", companies[0]["categories"])
+        self.assertNotIn("notes", companies[0]["categories"])
+
+    def test_skips_numeric_identifier_column(self):
+        """A numeric "Id" column (employee id) must not be treated as a salary index.
+        
+        This test should FAIL on current fork code and PASS after the fix.
+        """
+        ws = FakeWorksheet([
+            ("Company", "Salary Index", "Id"),
+            ("Example Corp", 105.5, 7),
+        ])
+
+        companies = parse_sheet(ws)
+
+        self.assertIn("salary_index", companies[0]["categories"])
+        self.assertNotIn("id", companies[0]["categories"])
+
+    def test_skips_personnummer_column(self):
+        """A "Personnummer" (Danish ID) column must not be treated as a salary category.
+        
+        This test should FAIL on current fork code and PASS after the fix.
+        """
+        ws = FakeWorksheet([
+            ("Company", "Salary Index", "Personnummer"),
+            ("Example Corp", 105.5, 1234567890),
+        ])
+
+        companies = parse_sheet(ws)
+
+        self.assertIn("salary_index", companies[0]["categories"])
+        self.assertNotIn("personnummer", companies[0]["categories"])
+
+
 if __name__ == "__main__":
     unittest.main()
