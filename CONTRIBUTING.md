@@ -1,53 +1,33 @@
 # Contributing
 
-Thanks for considering a contribution! This repo has a deliberate, narrow philosophy, and most declined PRs are well-executed work that simply didn't know about it. Read this first; it will save you effort and tell you where your work will land best.
+This repository is [prasalitis/job-application-assistant](https://github.com/prasalitis/job-application-assistant), a fork of [MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search). Both are real, active projects with different goals, and this file exists to make that difference explicit rather than let visitors assume this repo follows upstream's policy by default.
 
-## The one rule everything follows from
+## Two different projects now, by design
 
-**This repo is a universal template.** People fork it and adapt it to their own market, language, and profile. Upstream stays market-agnostic, person-agnostic, and Claude Code-native. The corollary: a contribution is judged by fit to this rule first, execution quality second. Well-built but off-policy still gets declined (kindly, with reasons).
+**Upstream is a universal template.** Its entire contribution policy is built around one rule: stay market-agnostic, person-agnostic, and single-harness, so that anyone can fork it and get a clean, minimal base. That's why upstream declines country-specific portal skills ("no principled stopping point"), declines a second agent-harness port alongside Claude Code ("the markdown specs ARE the implementation; a second copy drifts the moment either changes"), and keeps personal profile data out of the tree entirely, enforced by CI. Those are good rules — for a template meant to be forked by strangers who each want their own clean starting point.
 
-## What gets merged
+**This fork is a working instance, not a template.** It's one person's real, populated job search tool, kept public for transparency and so the architectural decisions below are reusable by anyone who wants them — not because it's trying to stay a minimal base other people fork blindly. Concretely, it does several things upstream's policy explicitly declines:
 
-- **Universal customization features**: anything that makes the fork-and-adapt path better for everyone. Precedent: `/add-template` (#30), `/add-portal` (#37).
-- **Robustness and correctness fixes** with the failing case demonstrated. Precedent: NaN flag validation (#35), HTML entity decoding (#55, #56), salary column detection (#64).
-- **Docs that close real gaps**: platform-specific setup (#41, #60), stale references (#36, #68).
-- **Infrastructure that reduces review burden** and is argued from evidence, not speculation. Precedent: CI (#59), which caught a latent bug while being built.
+- **Both Claude Code and Mistral Vibe are first-class**, not just Claude Code. `.claude/commands/` and `.agents/skills/` mirror each other deliberately — the exact "alternative-harness port" upstream's policy rules out for itself, because upstream is right that two independently-maintained copies drift, but here both copies are kept in sync as part of normal maintenance rather than being a one-off contribution nobody owns afterward.
+- **Country-specific portal skills are shipped in-tree** (Poland, Luxembourg, Switzerland, Sweden, Germany, Norway, plus the original Danish set) instead of living only in each user's own fork. Upstream's "no principled stopping point" objection is correct in general — but this repo isn't trying to be the one template everyone forks from, so shipping more reference implementations than any one user needs isn't a maintenance liability the way it would be upstream.
+- **Personal data ships in the same repo as the generic template**, not just in each fork. The `personal/` folder (gitignored) plus `tools/resolve-doc.ts` (reads `personal/` first, falls back to the generic tracked file) is how that's made safe: the tracked files stay identical to upstream's placeholder template, so the privacy guarantee upstream gets by *keeping personal data out entirely* is preserved here too, just via a resolution layer instead of an absence.
 
-## What gets declined
+None of this is upstream doing it wrong. It's a different problem: upstream optimizes for being the best possible thing to fork *from*; this repo optimizes for being a complete, working example of what a forked-and-fully-adapted instance looks like, with the specific adaptations (dual-harness, extra markets, the privacy split) built and tested rather than left as an exercise for the next person.
 
-- **Market- or country-specific skills and content.** One country's portal opens the door to every country's portal; there is no principled stopping point. Precedent: #31 (India), #39 (France, despite an honest and excellent PR), #67 (China). The in-tree portal skills are either country-agnostic (`linkedin-search`) or the maintainer's own demonstration instance (the Danish portals).
-- **Personal profile data.** The template ships placeholders; your populated profile lives in your fork. CI enforces this (`placeholder-integrity`). Precedent: #17, #72.
-- **Alternative-harness ports and duplicate workflow sources.** The markdown specs ARE the implementation; a second copy (another agent CLI, an orchestration layer, a wrapper command) drifts from the first the moment either changes. Precedent: #44, #49, #66.
-- **Speculative infrastructure.** Complexity must be argued from a problem that exists, not one that might. Precedent: #63.
-- **Kitchen-sink PRs.** One concern per PR. Bundles get asked to split (#73) - and splits get reviewed fast (#75, #76 arrived within the hour and were handled same-day).
+## Which one should you fork?
 
-## The bar for new commands
+- **Fork upstream** if you want the smallest possible starting point, use Claude Code only, and plan to build your own market's portal skills and your own profile-data approach from scratch. Its `CONTRIBUTING.md` describes a real, active review process for exactly that use case — read it there, not here.
+- **Fork this repo** if you also want Mistral Vibe support, want a head start on one of the markets already covered here, or want the `personal/`-split pattern already built rather than designing your own. You'll be forking a populated instance, so budget time to replace the profile data and prune what you don't need.
 
-The core lifecycle is **feature-complete**: `/setup` → `/scrape` → `/rank` → `/apply` → `/interview` → `/outcome` → calibration back into `/setup`, with `/expand`, `/upskill`, `/add-template`, `/add-portal`, and `/reset` around it. Every stage of a real job hunt has an owner.
+## Contributing to this fork specifically
 
-A new command therefore faces a high bar. The test that admitted the existing ones: **does it operationalize something error-prone that already exists in the framework** (documented machinery nothing executes, data something writes but nothing reads)? "Useful" and "possible" are not sufficient; the strongest proposals connect two things that already exist without modifying either (#43, #54).
+This isn't run as an open template soliciting PRs the way upstream is — it's maintained for one person's active job search, and most of its recent history is periodic, deliberate ports of vetted upstream fixes (security/privacy hardening, portal bug fixes) rather than a queue of external contributions. That said:
 
-## Claims get verified
+- **Bug reports are welcome** — open an issue if something's actually broken (a portal skill returning garbage, a LaTeX template failing to compile, a genuine correctness bug). No promise on response time.
+- **PRs for real bugs** (not style, not new market-specific skills, not architecture changes) are considered, judged by the same evidence bar upstream uses: state the failing case, show it reproduces, and keep the change to one concern.
+- **New market-specific portal skills** are more likely to be useful as your own fork than a PR here — see upstream's own reasoning on this, which applies equally: there's no principled stopping point once one country's portal is in-tree.
+- **Questions** are fine as GitHub issues on this repo. Broader design discussion about the universal-template shape of the project belongs in [upstream's Discussions](https://github.com/MadsLorentzen/ai-job-search/discussions), since that's the repo actually optimizing for that conversation.
 
-Reviews here are empirical. Bug reports are reproduced on master before the fix is considered; "all tests green" is checked against whether the tests can distinguish master from the fix. PRs whose premise doesn't reproduce get declined even when the code is fine - it has happened (#35's converter fix, #52's first version). You can make this fast:
+## Credit
 
-- State the failing case and how to reproduce it.
-- Put CLI tests in `.agents/skills/<name>/cli/tests/` (bun test, network-free where possible); Python tool tests in `tests/`.
-- Run what CI runs: `python3 tools/lint_skills.py` (or `python tools/lint_skills.py` if that is your Python 3 executable), `bun run typecheck` in touched CLIs, and the relevant test suites.
-
-**Credit norm:** a change that incorporates your actual code gets a `Co-authored-by` trailer; a change written independently from your observation or report gets a named mention in the commit message and PR. Both happen unprompted.
-
-## Building for your own market? Do this instead
-
-1. Fork the repo and run `/add-portal` with your local job board - it scaffolds a portal skill matching the shipped contract, and `/scrape` picks it up automatically.
-2. Announce your fork in the pinned [Community forks & adaptations](https://github.com/MadsLorentzen/ai-job-search/discussions/78) discussion so others can find it.
-
-Market-specific skills are genuinely valuable - they just live in forks, where their maintainers can test them and their users can find them.
-
-## Practical notes
-
-- **Portal-skill contract**: `search`/`detail` commands, `--format json|table|plain`, stderr JSON errors with exit 1, backoff on 429/5xx, zero runtime dependencies by default. See `/add-portal`'s spec and `linkedin-search` as the reference implementation.
-- **Personal-use boundaries**: portal skills that touch ToS-restricted sources carry a prominent personal-use-only warning, and CI deliberately makes no live portal requests. Don't "fix" that.
-- **LaTeX changes**: both templates must compile (`lualatex` for the CV, `xelatex` for the cover letter) and hold their exact page counts. CI smoke-checks this.
-
-Questions and proposals are welcome in [Discussions](https://github.com/MadsLorentzen/ai-job-search/discussions) - an Idea thread costs nothing and can save you building the wrong thing :-)
+All credit for the original architecture, the drafter-reviewer application pipeline, the core command lifecycle (`/setup` → `/scrape` → `/rank` → `/apply` → `/interview` → `/outcome`), and the Danish portal skills that seeded the pattern goes to [Mads Lorentzen](https://github.com/MadsLorentzen) and upstream's contributors. See [README.md](README.md#whats-different-from-upstream) for the concrete list of what this fork adds on top of that foundation.

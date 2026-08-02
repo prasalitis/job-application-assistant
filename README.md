@@ -123,7 +123,7 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 ## File structure
 
 ```
-ai-job-search/
+job-application-assistant/
 ├── CLAUDE.md                          # Main candidate profile + workflow rules
 ├── .claude/
 │   ├── commands/
@@ -338,7 +338,7 @@ To get the most from this, invest time during `/setup` in describing not just yo
 
 ## Contributing
 
-Thinking about a PR? Read [CONTRIBUTING.md](CONTRIBUTING.md) first - it explains what gets merged, what lives in forks, and why.
+Thinking about a PR, or wondering whether to fork this repo or [upstream](https://github.com/MadsLorentzen/ai-job-search)? Read [CONTRIBUTING.md](CONTRIBUTING.md) first - it explains how this fork's goals differ from upstream's template philosophy, and what that means for contributions.
 
 ## Acknowledgements
 
