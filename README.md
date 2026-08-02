@@ -4,22 +4,11 @@
 
 # AI Job Search
 
-[![CI](https://github.com/MadsLorentzen/ai-job-search/actions/workflows/ci.yml/badge.svg)](https://github.com/MadsLorentzen/ai-job-search/actions/workflows/ci.yml)
+[![CI](https://github.com/prasalitis/job-application-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/prasalitis/job-application-assistant/actions/workflows/ci.yml)
 
-An AI-powered job application framework built on [Claude Code](https://claude.com/claude-code). Fork it, fill in your profile, and let Claude evaluate job postings, tailor your CV, write cover letters, and prepare you for interviews.
+An AI-powered job application framework built on [Claude Code](https://claude.com/claude-code) and [Mistral Vibe](https://mistral.ai). Fork it, fill in your profile, and let Claude evaluate job postings, tailor your CV, write cover letters, and prepare you for interviews.
 
-> Note: This is an independent open-source project and is not affiliated with, endorsed by, sponsored by, or maintained by Anthropic. Anthropic and Claude Code are referenced only to describe the toolchain this workflow uses.
-
-<p align="center">
-  <i>Did this save you a Sunday of cover-letter writing? Consider a coffee.<br>
-  Did it land you the job? Maybe two.</i> ☕
-</p>
-
-<p align="center">
-  <a href="https://ko-fi.com/madslorentzen">
-    <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy me a coffee at ko-fi.com" height="40">
-  </a>
-</p>
+> Note: This is an independent open-source project and is not affiliated with, endorsed by, sponsored by, or maintained by Anthropic or Mistral. Anthropic/Claude Code and Mistral/Vibe are referenced only to describe the toolchains this workflow supports.
 
 ## What this is
 
@@ -56,8 +45,8 @@ The framework encodes career guidance best practices, including structured evalu
 ### 1. Fork and clone
 
 ```bash
-gh repo fork MadsLorentzen/ai-job-search --clone
-cd ai-job-search
+gh repo fork prasalitis/job-application-assistant --clone
+cd job-application-assistant
 ```
 
 ### 2. Install job search tools
