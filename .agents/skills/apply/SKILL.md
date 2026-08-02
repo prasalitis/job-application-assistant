@@ -78,7 +78,7 @@ Also read the most recent existing CV and cover letter files for concrete struct
 - Read any existing `cv/main_*.tex` file as a LaTeX template reference
 - Read any existing `cover_letters/cover_*.tex` or `cover_letters/Cover_*.tex` file as a template reference
 
-### CV (`cv/main_<company>.tex`)
+### CV (`cv/main_<company>_<role>.tex`)
 - Always in **English**
 - Follow the moderncv/banking format from `05-cv-templates.md`
 - Tailor the profile statement and experience bullets to the specific role
@@ -101,7 +101,7 @@ Write both files to disk using `write_file`. Keep the exact text of both drafts 
 **Mandatory lint gate before proceeding to Step 3.** Run the deterministic linter on both files - this replaces relying on write-time discipline alone for the escaping/punctuation/spec-compliance rules above, since three separate verified test runs showed that discipline isn't reliably followed in practice:
 
 ```bash
-bun run tools/latex-lint.ts --file cv/main_<company>.tex
+bun run tools/latex-lint.ts --file cv/main_<company>_<role>.tex
 bun run tools/latex-lint.ts --file cover_letters/cover_<company>_<role>.tex --cover-letter
 ```
 
@@ -177,7 +177,7 @@ After all edits are applied, the two files on disk are the final drafts.
 **Never skip this step.** Compile both documents and verify them with the deterministic wrapper before presenting - this replaces the manual compile/pdfinfo/pdftotext sequence entirely, so there is no longer a free-text "verified visually"-style claim to make. Multiple verified test runs made exactly that false claim even after this was patched twice in prose across two different files - a script that returns structured facts removes the possibility of it, because your job becomes relaying the JSON, not describing what you did.
 
 ```bash
-bun run tools/pdf-verify.ts --tex cv/main_<company>.tex --engine lualatex --expect-pages 2 \
+bun run tools/pdf-verify.ts --tex cv/main_<company>_<role>.tex --engine lualatex --expect-pages 2 \
   --contains "<your email>" --contains "<your phone number>"
 
 bun run tools/pdf-verify.ts --tex cover_letters/cover_<company>_<role>.tex --engine xelatex --expect-pages 1 \
@@ -212,7 +212,7 @@ Report pass/fail for each item (factual accuracy, targeting, consistency, qualit
 Summarize 3-5 key decisions made to tailor the application.
 
 ### Files Created
-List `cv/main_<company>.tex` and `cover_letters/cover_<company>_<role>.tex`.
+List `cv/main_<company>_<role>.tex` and `cover_letters/cover_<company>_<role>.tex`.
 
 Tell the user: "Both files are ready for your review. Open them to check the final output before compiling."
 

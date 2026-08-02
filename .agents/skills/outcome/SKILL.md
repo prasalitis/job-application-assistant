@@ -71,7 +71,7 @@ bun run tools/outcome-record.ts \
   --tracker job_search_tracker.csv --status <in_progress|hired|offer_declined|rejected|no_response|interview_only> \
   --note "<dated note, EXACTLY as the user described it - never reformat a date into a more precise one than given>" \
   --archive-root documents/applications \
-  --cv-source cv/main_<company>.tex --cover-source cover_letters/cover_<company>_<role>.tex
+  --cv-source cv/main_<company>_<role>.tex --cover-source cover_letters/cover_<company>_<role>.tex
 ```
 
 The script fuzzy-matches company+role against the tracker (same matcher as `tools/dedup-check.ts`), creates the archive folder if missing, copies `cv_draft.tex`/`cover_letter.tex` from the given sources if they exist and aren't already archived, updates the tracker's `status` column, and appends (never overwrites) the given note. Omit `--cv-source`/`--cover-source` if no draft files exist for this application - the script reports `sourceExisted: false` rather than erroring.
