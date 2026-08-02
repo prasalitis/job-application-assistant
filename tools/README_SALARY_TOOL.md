@@ -78,8 +78,10 @@ python3 tools/convert_salary_excel.py path/to/salary-data.xlsx \
 On Windows, use `py` if that is how Python is exposed on your PATH. If your system uses `python` instead of `python3`, substitute that in the examples.
 
 The converter auto-detects the Excel layout:
-- Looks for a "Company"/"Firma" column and an optional "City"/"By" column
-- Treats remaining columns as salary data (auto-pairs count/index columns)
+- Looks for a "Company"/"Firma" column and an optional "City"/"By" column, matched by header token (e.g. "By/City" or "Kommune (2024)" match, not just an exact "City" header)
+- Identifier columns (e.g. "ID", "Personnummer") and free-text columns are skipped automatically, not mistaken for salary data
+- Treats remaining columns as salary data, pairing count/index columns by matching category name (e.g. "Engineering Count" pairs with "Engineering Index" even if other category columns sit between them)
+- A lone count or index column with no matching pair is kept as a standalone value rather than dropped
 
 ### Option C: Build from research
 
@@ -113,10 +115,17 @@ python3 salary_lookup.py "Novo Nordisk"
 python3 salary_lookup.py "Ørsted" --city "Fredericia"
 python3 salary_lookup.py "COWI" --json
 python3 salary_lookup.py --list-all
+python3 salary_lookup.py --validate
 ```
+
+`--validate` checks `salary_data.json`'s shape without doing a lookup - useful right after creating or editing the file by hand (Option A or C above), or after an Excel conversion, before trusting the output. It reports:
+- **Errors** (exit code 1): the file won't work correctly as-is - wrong types, a missing required field, a malformed category. Each error names the exact company/category it's in.
+- **Warnings** (exit code 0): the file still works, but something's worth a second look - e.g. two companies with the same name.
 
 ## Important notes
 
 - The data file (`salary_data.json`) is **excluded from git** (see `.gitignore`). Your salary data may be proprietary or confidential.
 - If the data file is missing, `salary_lookup.py` exits with a helpful error message and the `/apply` workflow skips the salary benchmark step.
+- If the data file exists but is malformed (invalid JSON, wrong field types), every lookup fails fast with a specific error instead of crashing or silently producing wrong output - run `--validate` to see every issue at once instead of fixing them one at a time.
 - The fuzzy matcher handles Danish company name variations: legal suffixes, Nordic characters, anglicized spellings, and partial matches.
+- A company with no recorded `city` no longer breaks `--city` filtering - it's treated as not matching that filter rather than crashing.
