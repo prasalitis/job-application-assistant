@@ -12,7 +12,7 @@ An AI-powered job application framework built on [Claude Code](https://claude.co
 
 ## What this is
 
-A structured workflow that turns Claude Code into a full-stack job application assistant. The core workflow (self-profiling, fit evaluation, and the drafter-reviewer application pipeline) is **language- and country-agnostic**. The job portal search skills are built for the Danish market (Jobindex, Jobnet, Akademikernes Jobbank, etc.), but the pattern is designed to be swapped for your local job boards.
+A structured workflow that turns Claude Code **or** Mistral Vibe into a full-stack job application assistant — pick whichever agent you already use, both get the identical workflow. The core workflow (self-profiling, fit evaluation, and the drafter-reviewer application pipeline) is **language- and country-agnostic**. The job portal search skills are built for the Danish market (Jobindex, Jobnet, Akademikernes Jobbank, etc.), but the pattern is designed to be swapped for your local job boards.
 
 ```
 /setup          /scrape              /apply <url>
@@ -34,9 +34,15 @@ The framework encodes career guidance best practices, including structured evalu
 
 ## Prerequisites
 
-- [Claude Code](https://claude.com/claude-code) (CLI)
+Pick **one** agent — both run the identical workflow, so you only need one of the two below, not both:
+
+- [Claude Code](https://claude.com/claude-code) (CLI), using the commands under `.claude/` — **or**
+- [Mistral Vibe](https://mistral.ai), using the mirrored skills under `.agents/skills/`
+
+Everything below is needed regardless of which agent you picked:
+
 - Python 3.10+
-- [Bun](https://bun.sh) (for Danish job search CLI tools)
+- [Bun](https://bun.sh) (for the job search CLI tools)
 - LaTeX distribution with `lualatex` and `xelatex`: [TeX Live](https://tug.org/texlive/), [MacTeX](https://tug.org/mactex/), [TinyTeX](https://yihui.org/tinytex/), or [MiKTeX](https://miktex.org/). The CV compiles with `lualatex` (pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors); the cover letter compiles with `xelatex` because `cover.cls` requires `fontspec`. If using a minimal TeX install such as TinyTeX or BasicTeX, install the extra packages listed in [SETUP.md](SETUP.md#minimal-tex-install-tinytexbasictex).
 - Optional: `pdftotext` from [poppler](https://poppler.freedesktop.org/) (macOS: `brew install poppler`, Debian/Ubuntu: `apt install poppler-utils`, Windows: `choco install poppler`) — used by `/apply`'s ATS parseability check on the compiled CV. If missing, the check degrades gracefully to a visual keyword review.
 
@@ -122,10 +128,14 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 
 ## File structure
 
+`.claude/` and `.agents/skills/` are parallel entry points into the same workflow — one command per row below, just invoked differently depending on which agent you picked in [Prerequisites](#prerequisites). Skills that only exist on one side are noted inline.
+
 ```
 job-application-assistant/
-├── CLAUDE.md                          # Main candidate profile + workflow rules
-├── .claude/
+├── CLAUDE.md                          # Claude Code profile+rules file - tracked as a generic [PLACEHOLDER] template; your real content stays a local, never-committed diff
+├── AGENTS.md                          # Same role as CLAUDE.md, for Mistral Vibe - gitignored entirely (not even a placeholder is tracked)
+├── personal/                          # Your real profile, writing style, and search data - gitignored; tools/resolve-doc.ts resolves this ahead of the generic files below for both agents
+├── .claude/                           # Claude Code entry points
 │   ├── commands/
 │   │   ├── apply.md                   # /apply workflow (drafter-reviewer)
 │   │   ├── setup.md                   # /setup onboarding (documents folder, CV import, or interview)
@@ -146,23 +156,37 @@ job-application-assistant/
 │   │   │   ├── 05-cv-templates.md     # LaTeX CV structure + tailoring rules
 │   │   │   ├── 06-cover-letter-templates.md # LaTeX cover letter templates
 │   │   │   └── 07-interview-prep.md   # STAR examples + interview framework
-│   │   ├── job-scraper/               # Job search orchestration
-│   │   └── upskill/                   # /upskill skill gap analysis and learning plan
+│   │   ├── job-scraper/               # Job search orchestration - invokes the portal CLIs under .agents/skills/ (see below), regardless of which agent you're using
+│   │   └── upskill/                   # /upskill skill gap analysis and learning plan - Claude Code only, no Vibe port yet
 │   └── settings.json                  # Claude Code permissions (shared, scoped)
-├── .agents/skills/                    # Job portal CLI tools + Vibe command mirrors
-│   ├── jobbank-search/                # Akademikernes Jobbank (Denmark)
-│   ├── jobdanmark-search/             # Jobdanmark.dk (Denmark)
-│   ├── jobindex-search/               # Jobindex.dk (Denmark)
-│   ├── jobnet-search/                 # Jobnet.dk (Denmark, government portal)
-│   ├── linkedin-search/               # LinkedIn public job listings (country-agnostic)
-│   ├── freehire-search/               # freehire.dev aggregator, ~50 ATS platforms (many markets)
-│   ├── pracuj-search/                 # Pracuj.pl (Poland)
-│   ├── nofluffjobs-search/            # No Fluff Jobs (Poland + CEE)
-│   ├── moovijob-search/                # Moovijob.com (Luxembourg)
-│   ├── jobsch-search/                  # jobs.ch (Switzerland)
-│   ├── arbetsformedlingen-search/       # Platsbanken via the JobTech Dev API (Sweden)
-│   ├── arbeitsagentur-search/           # Bundesagentur für Arbeit Jobsuche API (Germany)
-│   └── nav-search/                     # NAV Arbeidsplassen (Norway)
+├── .agents/skills/                    # Mistral Vibe entry points - mirrors .claude/ above, one skill per slash-command
+│   ├── apply/                         # Mirrors /apply
+│   ├── setup/                         # Mirrors /setup
+│   ├── expand/                        # Mirrors /expand
+│   ├── add-template/                  # Mirrors /add-template
+│   ├── add-portal/                    # Mirrors /add-portal
+│   ├── rank/                          # Mirrors /rank
+│   ├── outcome/                       # Mirrors /outcome
+│   ├── interview/                     # Mirrors /interview
+│   ├── reset/                         # Mirrors /reset
+│   ├── job-application-assistant/     # Mirrors .claude/skills/job-application-assistant/ (same 01-07 profile files)
+│   ├── job-scraper/                   # Mirrors .claude/skills/job-scraper/ - both call into the same portal CLIs below
+│   ├── html-report/                   # Application-tracker HTML dashboard - Vibe only, no Claude Code command yet
+│   └── <portal>-search/               # Job portal CLI tools - the actual implementation, shared by BOTH agents (job-scraper on either side shells out here)
+│       ├── jobbank-search/            # Akademikernes Jobbank (Denmark)
+│       ├── jobdanmark-search/         # Jobdanmark.dk (Denmark)
+│       ├── jobindex-search/           # Jobindex.dk (Denmark)
+│       ├── jobnet-search/             # Jobnet.dk (Denmark, government portal)
+│       ├── linkedin-search/           # LinkedIn public job listings (country-agnostic)
+│       ├── freehire-search/           # freehire.dev aggregator, ~50 ATS platforms (many markets)
+│       ├── pracuj-search/             # Pracuj.pl (Poland)
+│       ├── nofluffjobs-search/        # No Fluff Jobs (Poland + CEE)
+│       ├── moovijob-search/           # Moovijob.com (Luxembourg)
+│       ├── jobsch-search/             # jobs.ch (Switzerland)
+│       ├── arbetsformedlingen-search/ # Platsbanken via the JobTech Dev API (Sweden)
+│       ├── arbeitsagentur-search/     # Bundesagentur für Arbeit Jobsuche API (Germany)
+│       └── nav-search/                # NAV Arbeidsplassen (Norway)
+├── .vibe/                             # Mistral Vibe subagent configs (agents/, prompts/) - Vibe's equivalent of Claude Code's built-in Agent tool, used by /apply's reviewer step
 ├── cv/
 │   └── main_example.tex               # moderncv LaTeX template
 ├── cover_letters/
@@ -180,14 +204,19 @@ job-application-assistant/
 │   └── applications/                  # Past application records (<company>_<role>/)
 ├── .github/workflows/ci.yml           # CI: LaTeX smoke compiles, skill lint, CLI typechecks
 ├── salary_lookup.py                   # Salary benchmarking tool (BYO data)
-├── tools/
+├── tools/                             # Deterministic helpers used by both agents' skills - not run directly
+│   ├── resolve-doc.ts                 # personal/-first, generic-fallback path resolution (the mechanism behind the personal/ split above)
+│   ├── dedup-check.ts                 # Fuzzy dedup for /scrape results
+│   ├── latex-lint.ts                  # LaTeX template lint
+│   ├── pdf-verify.ts                  # Compiled-PDF page count + ATS parseability check
+│   ├── outcome-record.ts              # /outcome archive helper
 │   ├── convert_salary_excel.py        # Convert salary Excel to JSON
 │   ├── lint_skills.py                 # CI lint for skills, commands, settings.json
 │   ├── security_guards.py             # CI guards: permission allowlist, gitignore rules, manifests
 │   └── README_SALARY_TOOL.md          # Salary tool setup instructions
-├── job_scraper/                       # Scraper state (seen jobs, results)
-├── upskill/                           # /upskill report output (markdown reports per run)
-├── job_search_tracker.csv             # Application tracking spreadsheet
+├── job_scraper/                       # Scraper state (seen jobs, results) - gitignored
+├── upskill/                           # /upskill report output (markdown reports per run) - gitignored
+├── job_search_tracker.csv             # Application tracking spreadsheet - gitignored
 └── SETUP.md                           # Detailed setup guide
 ```
 
