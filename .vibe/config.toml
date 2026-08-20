@@ -1,0 +1,47 @@
+# Mistral Vibe Configuration for job-application-assistant
+# This file tells Vibe which skills to load and what permissions they have
+
+[skills]
+directories = [".agents/skills"]
+
+# Global permissions - skills can use these tools unless overridden
+[permissions]
+# File operations
+read_file = true
+write_file = true
+edit = true
+grep = true
+glob = true
+
+# Web operations
+web_fetch = true
+web_search = true
+
+# Shell operations
+bash = true
+git_bash = true
+
+# User interaction
+ask_user_question = true
+
+# Agent/subagent operations
+task = true
+
+# Disabled by default (safety)
+write_file_disabled = false
+bash_disabled = false
+
+# Skill-specific overrides (if needed)
+[skills.overrides]
+"job-scraper" = { name = "scrape" }
+"job-application-assistant" = { name = "job-application-assistant" }
+"apply" = { name = "apply" }
+"setup" = { name = "setup" }
+"reset" = { name = "reset" }
+"expand" = { name = "expand" }
+"interview" = { name = "interview" }
+"outcome" = { name = "outcome" }
+"rank" = { name = "rank" }
+"add-portal" = { name = "add-portal" }
+"add-template" = { name = "add-template" }
+"html-report" = { name = "html-report" }
