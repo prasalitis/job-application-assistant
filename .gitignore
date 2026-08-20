@@ -23,8 +23,11 @@ salary_data.json
 # Match at any depth: the job-scraper skill resolves `job_scraper/` relative to
 # its own directory, so these land at .claude/skills/job-scraper/job_scraper/*.
 # A rooted `job_scraper/...` pattern silently fails to match them.
-**/job_scraper/seen_jobs.json
-**/job_scraper/notion_sync.json
+# *.json covers all generated output (seen_jobs.json, notion_sync.json, dated
+# scrape_candidates_*.json snapshots, etc.) - by extension, not filename, since
+# new dated filenames appear on every /scrape run and a filename-specific rule
+# silently misses each new one.
+**/job_scraper/*.json
 **/job_scraper/*.md
 *_BehavioralReport.pdf
 linkedin_Profile.pdf

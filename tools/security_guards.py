@@ -45,8 +45,10 @@ REQUIRED_IGNORE_RULES = [
     "salary_data.json",
     # Depth-independent: the job-scraper skill resolves `job_scraper/` relative
     # to its own directory, so the state file lands under .claude/skills/... and
-    # a repo-rooted rule silently fails to match it.
-    "**/job_scraper/seen_jobs.json",
+    # a repo-rooted rule silently fails to match it. *.json by extension, not a
+    # specific filename, since dated scrape-output snapshots change name on
+    # every run.
+    "**/job_scraper/*.json",
     # Extension-agnostic: custom templates (e.g. Typst) write main_<company>_<role>.typ
     "cv/main_*.*",
     "!cv/main_example.tex",
