@@ -1,0 +1,22 @@
+name: unicorn-job-sweep
+on:
+  push:
+    branches: [sweep/run-2026-10-20]
+permissions:
+  contents: write
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run sweep
+        run: python sweep.py
+      - name: Commit results
+        run: |
+          git config user.name "sweep-bot"
+          git config user.email "action@github.com"
+          git add results/
+          git diff --cached --quiet || (git commit -m "sweep results [skip ci]" && git push)
