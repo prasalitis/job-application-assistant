@@ -116,3 +116,21 @@ summary = {'generated_utc': datetime.datetime.utcnow().isoformat(), 'total_jobs'
 with open('results/latest.json', 'w') as f:
     json.dump({'summary': summary, 'candidates': uniq}, f, indent=1)
 print(json.dumps(summary)[:3000])
+
+# --- detail dump for borderline jobs ---
+DETAILS = [
+  ('iceye', ['Buyer (Mechanical Systems and AIT Enablement)', 'Buyer Supply Chain (Category Flight Control, Power & Structure)', 'Business Applications Specialist']),
+  ('trustly', ['Head of Global Operational Framework (EU, UK, US)']),
+]
+detail_out = []
+for tok, titles in DETAILS:
+    try:
+        d = jget('https://api.ashbyhq.com/posting-api/job-board/%s' % tok)
+        for j in d.get('jobs', []):
+            if j.get('title') in titles:
+                detail_out.append({'company': tok, 'title': j.get('title'), 'location': j.get('location'), 'department': j.get('department'), 'isRemote': j.get('isRemote'), 'url': 'https://jobs.ashbyhq.com/%s/%s' % (tok, j.get('id')), 'description': clean(j.get('description') or '', 2500)})
+    except Exception as e:
+        detail_out.append({'company': tok, 'error': str(e)})
+with open('results/details.json', 'w') as f:
+    json.dump(detail_out, f, indent=1)
+print('details:', len(detail_out))
