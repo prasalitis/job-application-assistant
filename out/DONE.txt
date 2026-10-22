@@ -1,0 +1,130 @@
+{
+ "vinteden": [
+  214,
+  214
+ ],
+ "adyen": [
+  247,
+  98
+ ],
+ "mewssystems": [
+  31,
+  6
+ ],
+ "jetbrains": [
+  52,
+  29
+ ],
+ "bird": [
+  32,
+  25
+ ],
+ "truecaller": [
+  31,
+  10
+ ],
+ "lovable": [
+  61,
+  0
+ ],
+ "trustpilot": [
+  49,
+  12
+ ],
+ "wolt": [
+  201,
+  36
+ ],
+ "oura": [
+  81,
+  46
+ ],
+ "relex": [
+  41,
+  20
+ ],
+ "onrunning": [
+  201,
+  25
+ ],
+ "scandit": [
+  14,
+  10
+ ],
+ "gostudent": [
+  27,
+  9
+ ],
+ "bitpanda": [
+  31,
+  12
+ ],
+ "hostinger": [
+  47,
+  5
+ ],
+ "mollie": [
+  46,
+  4
+ ],
+ "keyrock": [
+  8,
+  2
+ ],
+ "trustly": [
+  37,
+  14
+ ],
+ "legora": [
+  308,
+  20
+ ],
+ "pleo": [
+  32,
+  1
+ ],
+ "lunar": [
+  15,
+  2
+ ],
+ "gelato": [
+  0,
+  0
+ ],
+ "dune": [
+  4,
+  0
+ ],
+ "iceye": [
+  194,
+  24
+ ],
+ "supercell": [
+  39,
+  2
+ ],
+ "deliverect": [
+  21,
+  1
+ ],
+ "spotify": [
+  80,
+  8
+ ],
+ "sonarsource": [
+  116,
+  27
+ ],
+ "oxylabs": [
+  92,
+  0
+ ],
+ "castai": [
+  34,
+  0
+ ],
+ "nordsecurity": [
+  136,
+  39
+ ]
+}

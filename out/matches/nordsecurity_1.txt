@@ -1,0 +1,84 @@
+### Marketing Project Manager | Mid-Senior | Saily
+DEPT: Marketing &amp; Communications
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/fa6661d0-f049-4d87-9d80-4c2a2521fc04/
+DESC: product:Saily area:Marketing &amp; Communications
+
+### Office Manager | Junior-Mid
+DEPT: People
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/570d62c4-8e2e-431e-af9e-be9bf44dc098/
+DESC: product:Nord Security area:People
+
+### Privacy Legal Counsel
+DEPT: Legal
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/49fe36ad-736f-474c-9bd4-c4f927e7764c/
+DESC: product:Nord Security area:Legal
+
+### Product Marketing Manager | AI Security
+DEPT: Marketing &amp; Communications
+LOC: Warsaw
+URL: https://nordsecurity.com/careers/39e1f928-11f1-45fd-9c99-b32d0793ae62/
+DESC: product:Nord B2B area:Marketing &amp; Communications
+
+### Product Marketing Manager | AI Security
+DEPT: Marketing &amp; Communications
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/e6809c4c-8faf-41e6-b944-863e5eaf3e31/
+DESC: product:Nord B2B area:Marketing &amp; Communications
+
+### Quality Assurance Engineer | Mid-Senior | Mobile | Coveron
+DEPT: Engineering
+LOC: Poland
+URL: https://nordsecurity.com/careers/a3fd8c39-9baf-4c05-8655-295eefa47132/
+DESC: product:Coveron area:Engineering
+
+### Quality Assurance Engineer | Mid-Senior | Mobile | Coveron
+DEPT: Engineering
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/724666bc-2b73-4b9f-84d3-8c1fa2e5a519/
+DESC: product:Coveron area:Engineering
+
+### Risk Manager | Mid
+DEPT: Risk
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/4d5de5e8-4236-47a7-949b-ed4322db6fe3/
+DESC: product:Nord Security area:Risk
+
+### Risk Team Lead | Mid
+DEPT: Risk
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/929e1252-8544-47c5-9f6f-d3dc08c1e6f9/
+DESC: product:Nord Security area:Risk
+
+### Salesforce Administrator | Mid-Senior
+DEPT: IT Operations
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/5461d61a-830f-4f2d-9755-7f9d9260b432/
+DESC: product:Nord Security area:IT Operations
+
+### Security analyst | Internship in SOC
+DEPT: Engineering
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/0e6290eb-a354-41a8-9a8f-3fd2f2a2e6f7/
+DESC: product:NordVPN area:Engineering
+
+### Tax Specialist | Direct taxes | Mid-Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/73b66b1e-c2ee-4622-9d6e-5d4c4f4bec31/
+DESC: product:Nord Security area:Finance
+
+### Tax Specialist | Indirect Taxes | Mid-Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/3c4a4675-4872-4b7d-8830-4f4310b53f84/
+DESC: product:Nord Security area:Finance
+
+### Workday Integrations Expert | Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/d4c1cf10-4dbc-4723-ac2c-402076c25118/
+DESC: product:Nord Security area:Finance
+

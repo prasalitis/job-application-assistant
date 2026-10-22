@@ -1,0 +1,150 @@
+### Analytics Engineer | Mid-Senior | Finance Team
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/3761d7bb-851a-44f3-83f0-7538abf6a5ac/
+DESC: product:Nord Security area:Finance
+
+### Analytics Engineer | Mid-Senior | Finance Team
+DEPT: Finance
+LOC: Warsaw
+URL: https://nordsecurity.com/careers/9263f8c0-30bf-4476-a2a5-ae6bd189d528/
+DESC: product:Nord Security area:Finance
+
+### Analytics Engineer | Mid-Senior | Finance Team
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/ac6272b8-0df7-44eb-91b1-d293c71dedb6/
+DESC: product:Nord Security area:Finance
+
+### AP Accountant | Mid-Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/8d92cf86-b2e9-4c65-a34d-664965466c68/
+DESC: product:Nord Security area:Finance
+
+### AP Accountant | Mid-Senior
+DEPT: Finance
+LOC: Warsaw
+URL: https://nordsecurity.com/careers/d3d7bde6-6ec9-4f6d-9a3e-58700302a14e/
+DESC: product:Nord Security area:Finance
+
+### Application Security Engineer | Mid-Senior | iOS
+DEPT: Engineering
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/48a3f4fe-0574-4b70-b1b0-9e6e2bbd7ce3/
+DESC: product:Nord Security area:Engineering
+
+### Application Security Engineer | Mid-Senior | iOS
+DEPT: Engineering
+LOC: Poland
+URL: https://nordsecurity.com/careers/b978dead-dbb8-4670-b225-f632425da787/
+DESC: product:Nord Security area:Engineering
+
+### Application Security Engineer | Mid-Senior | Low-level
+DEPT: Engineering
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/8d81d19b-dba4-40fc-aecd-cd97396d169c/
+DESC: product:Nord Security area:Engineering
+
+### Application Security Engineer | Mid-Senior | Low-level
+DEPT: Engineering
+LOC: Poland
+URL: https://nordsecurity.com/careers/a5fb1c56-059c-4a65-b728-1aee2b007a7d/
+DESC: product:Nord Security area:Engineering
+
+### Application Security Engineer | Senior
+DEPT: Engineering
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/877a42a7-db71-4bdf-b4d2-74b7a3392be8/
+DESC: product:NordVPN area:Engineering
+
+### Application Security Engineer | Senior
+DEPT: Engineering
+LOC: Poland
+URL: https://nordsecurity.com/careers/d3457664-ad58-43c0-bc37-e4c55302849c/
+DESC: product:NordVPN area:Engineering
+
+### Business Insight Manager | Mid-Senior
+DEPT: Marketing &amp; Communications
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/5eefced8-7f9f-4f42-ae39-871af03a3d6e/
+DESC: product:Nord Security area:Marketing &amp; Communications
+
+### Data Analyst (Finance) | Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/c6c89739-1de8-4eb7-ab11-333a55559cab/
+DESC: product:Nord Security area:Finance
+
+### Data Analyst (Finance) | Senior
+DEPT: Finance
+LOC: Warsaw
+URL: https://nordsecurity.com/careers/d633d737-393d-4e1b-b709-8d35bf546594/
+DESC: product:Nord Security area:Finance
+
+### Data Analyst | Group Finance &amp; Operations | Mid-Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/e5b7d65d-9b20-4ab6-ae11-705ce56901ce/
+DESC: product:Nord Security area:Finance
+
+### Data Analyst | Group Finance &amp; Operations | Mid-Senior
+DEPT: Finance
+LOC: Warsaw
+URL: https://nordsecurity.com/careers/7b25338a-b93e-4f58-b448-838ae2500c3d/
+DESC: product:Nord Security area:Finance
+
+### Data Analyst | Mid-Senior | Threat Intelligence
+DEPT: Engineering
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/fea99439-53bf-446c-b322-e833dce9fd2c/
+DESC: product:Nord Security area:Engineering
+
+### Digital Marketing Project Manager | Mid-Senior
+DEPT: Marketing &amp; Communications
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/d8447328-5610-4ce6-953c-9f28ebbab71d/
+DESC: product:NordVPN area:Marketing &amp; Communications
+
+### Full-Stack Developer | Mid-Senior | AI Tools
+DEPT: Administration &amp; Core services
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/b9d9ea58-5d0c-47b4-9b29-23f3a3363300/
+DESC: product:Nord Security area:Administration &amp; Core services
+
+### GL Accountant | Senior
+DEPT: Finance
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/541c8891-9da0-4eef-a3df-7c7a5849eb97/
+DESC: product:Nord Security area:Finance
+
+### Graphic Designer | Mid-Senior
+DEPT: Design
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/86cfd5dc-c075-4efa-a9dc-d420ec452003/
+DESC: product:Nord Security area:Design
+
+### Influencer Marketing Manager | Mid-Senior
+DEPT: Marketing &amp; Communications
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/66569d2d-e67a-4033-8c33-7cefc154f848/
+DESC: product:Nord Security area:Marketing &amp; Communications
+
+### Lead Graphic Designer
+DEPT: Design
+LOC: Vilnius / Kaunas
+URL: https://nordsecurity.com/careers/5fa183a5-7bfd-402e-a42f-5ab927d9e513/
+DESC: product:Nord Security area:Design
+
+### Marketing Legal Counsel
+DEPT: Legal
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/744ce1d7-3fc7-4e82-8ba6-c68d0a6940a0/
+DESC: product:Nord Security area:Legal
+
+### Marketing Project Manager | Mid-Senior | Coveron
+DEPT: Marketing &amp; Communications
+LOC: Vilnius
+URL: https://nordsecurity.com/careers/586bf099-ab4e-4039-b18f-c7b7cdbbbc50/
+DESC: product:Coveron area:Marketing &amp; Communications
+

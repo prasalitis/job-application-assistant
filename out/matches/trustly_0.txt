@@ -1,0 +1,84 @@
+### Staff Security Engineer - AI Enablement
+DEPT: Tech
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/a5f4bf21-a806-4865-88cf-91980ba7a9fe
+DESC: 
+
+### Chief Information Security Officer
+DEPT: Tech
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/e54b4f34-cffe-4a95-a483-ed3c9ce0da34
+DESC: 
+
+### Senior Manager, Risk Operations 
+DEPT: Data & Risk
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/3a239ce0-9e09-4340-a6df-a1374531f928
+DESC: 
+
+### Senior Risk & Assurance Manager EU/UK
+DEPT: Compliance
+LOC: London
+URL: https://jobs.ashbyhq.com/trustly/4031f56e-0820-49e5-a4ec-24cb3039569b
+DESC:  REMOTE
+
+### Senior Analyst
+DEPT: Data & Risk
+LOC: New York
+URL: https://jobs.ashbyhq.com/trustly/d1a9fbe2-64b2-42ef-8318-7b317deda1fa
+DESC: 
+
+### Director, Data Science and Machine Learning (Risk and Fraud)
+DEPT: Data & Risk
+LOC: New York + San Francisco
+URL: https://jobs.ashbyhq.com/trustly/5a49057d-0696-49e2-aaab-1336bbf6c4c6
+DESC: 
+
+### Manager, Data Science and Machine Learning (Risk and Fraud)
+DEPT: Data & Risk
+LOC: New York + San Francisco
+URL: https://jobs.ashbyhq.com/trustly/c77835c2-84c9-4116-a9a5-5015a4e2326f
+DESC:  REMOTE
+
+### Principal Risk Solutions Consultant
+DEPT: Data & Risk
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/83422103-5c1e-4b10-921c-b6b6948428c5
+DESC: 
+
+### Senior Technical Program Manager, Bank Connectivity
+DEPT: Tech
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/2e1aff55-5cf7-40ef-887b-c4eb4903ce6f
+DESC: 
+
+### Senior Manager, Risk & Fraud Analytics
+DEPT: Data & Risk
+LOC: San Francisco
+URL: https://jobs.ashbyhq.com/trustly/e0085cd4-9b0a-47b6-a872-7832bebfeee1
+DESC: 
+
+### Regulatory Compliance Manager 
+DEPT: Legal
+LOC: Paris
+URL: https://jobs.ashbyhq.com/trustly/20870b4a-ce2f-4851-91a0-28f4b1315c41
+DESC: 
+
+### Director, Risk Product Management and Team Operations
+DEPT: Data & Risk
+LOC: San Francisco + New York
+URL: https://jobs.ashbyhq.com/trustly/2aea1553-6f52-43c7-837c-499ea7b5ea54
+DESC:  REMOTE
+
+### Compliance Manager, EU
+DEPT: Compliance
+LOC: Stockholm
+URL: https://jobs.ashbyhq.com/trustly/870088c0-c4ae-457f-abe3-15ddcb5e8cbe
+DESC:  REMOTE
+
+### Senior Engineering Manager, Risk Platform
+DEPT: Tech
+LOC: San Francisco + New York
+URL: https://jobs.ashbyhq.com/trustly/bae273e3-3ba5-4bb2-91c2-b9c2c2a29d23
+DESC:  REMOTE
+

@@ -1,0 +1,24 @@
+### Senior Internal Auditor
+DEPT: Internal Audit
+LOC: Amsterdam
+URL: https://jobs.ashbyhq.com/mollie/0c6b74d3-b1a2-4679-bd20-07144d0a701d
+DESC: 
+
+### Senior Security Risk Officer
+DEPT: Risk Management and Control
+LOC: Amsterdam + London
+URL: https://jobs.ashbyhq.com/mollie/adf05004-22c1-4449-adcb-8f7be3f19a79
+DESC: 
+
+### Security Operations Engineer II
+DEPT: Engineering
+LOC: Amsterdam
+URL: https://jobs.ashbyhq.com/mollie/e9aa62bf-2c18-44c4-beb0-6a8e6ea257db
+DESC: 
+
+### Platform Engineer II - Infrastructure Governance
+DEPT: Engineering
+LOC: Milan
+URL: https://jobs.ashbyhq.com/mollie/28d6b7ce-0580-4756-89a9-2ae60970bc60
+DESC: 
+

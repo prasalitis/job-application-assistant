@@ -1,0 +1,150 @@
+### Account Executive, Federal US Government
+DEPT: Sales AMER/GoToMarket
+LOC: Alexandria
+URL: https://jobs.lever.co/sonarsource/bf9cfcf9-97c9-4657-aa3a-b3ece1c25224
+DESC: Account Executive, Federal US Government
+
+### AI Systems Engineer
+DEPT: Business Technology/Mission Control
+LOC: Geneva
+URL: https://jobs.lever.co/sonarsource/3cae19c4-144b-41b9-89c1-03203547a8d3
+DESC: AI Systems Engineer
+
+### AI Systems Engineer
+DEPT: Business Technology/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/54ebd27e-5f7f-4586-bcc2-f59d1700feba
+DESC: AI Systems Engineer
+
+### AI Systems Engineer (f/m/d)
+DEPT: Business Technology/Mission Control
+LOC: Bochum
+URL: https://jobs.lever.co/sonarsource/6ae7c963-dd85-4ee4-a436-092490d1677c
+DESC: AI Systems Engineer (f/m/d)
+
+### Application Security Engineer
+DEPT: Information Security/Mission Control
+LOC: Geneva
+URL: https://jobs.lever.co/sonarsource/5a8f589d-86fb-4330-9e30-9665114d49a8
+DESC: Application Security Engineer
+
+### Application Security Engineer
+DEPT: Information Security/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/65c2b725-2cda-458d-993a-8cb25a57947d
+DESC: Application Security Engineer
+
+### Cloud Platform Automation Engineer (f/m/d)
+DEPT: IT Ops/Mission Control
+LOC: Bochum
+URL: https://jobs.lever.co/sonarsource/7a76fc2f-d21a-4e99-a31b-79b5431b610a
+DESC: Cloud Platform Automation Engineer (f/m/d)
+
+### Corporate Accounting Manager
+DEPT: Finance/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/0edac797-847d-4b5a-a75d-3b358babdf98
+DESC: Corporate Accounting Manager
+
+### Data Scientist, Product Analytics
+DEPT: Strategy/Mission Control
+LOC: Geneva
+URL: https://jobs.lever.co/sonarsource/c9783c31-cfa1-4d95-b31a-278cd0d14162
+DESC: Data Scientist, Product Analytics
+
+### Director, Global Head of Recruiting
+DEPT: People/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/cc17939f-e2a7-4c14-a344-39d02a1a79bc
+DESC: Director, Global Head of Recruiting
+
+### Director, Global Process Owner - Order to Cash
+DEPT: Finance/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/ca8e6b8e-eef9-479d-9a3d-7dfcb483b088
+DESC: Director, Global Process Owner - Order to Cash
+
+### Director, Legal - US Commercial
+DEPT: Legal/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/d193b65e-c462-461d-9807-b1b4952cd91a
+DESC: Director, Legal - US Commercial
+
+### Global Benefits Manager
+DEPT: People/Mission Control
+LOC: London
+URL: https://jobs.lever.co/sonarsource/baff8b7f-473f-4758-971b-ced4b241772d
+DESC: Global Benefits Manager
+
+### Global Benefits Manager
+DEPT: People/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/f4ee5b5a-07f9-4a1d-923c-90d7cabb107e
+DESC: Global Benefits Manager
+
+### Head of Technology Partnerships
+DEPT: Growth and New Ventures/Mission Control
+LOC: San Mateo, CA
+URL: https://jobs.lever.co/sonarsource/83232598-b245-4504-a108-ab87b5898dae
+DESC: Head of Technology Partnerships
+
+### Major Incident Manager
+DEPT: IT Ops/Mission Control
+LOC: Singapore
+URL: https://jobs.lever.co/sonarsource/73ce1814-4f5e-451c-8cbf-322e2dd7251f
+DESC: Major Incident Manager
+
+### Major Incident Manager
+DEPT: IT Ops/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/e6b55e1c-d393-436b-8682-d510b9241adf
+DESC: Major Incident Manager
+
+### Purchase to Pay Intern (Paid Internship)
+DEPT: Finance/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/d1c1c192-157e-4b96-9aef-a63860511ec5
+DESC: Purchase to Pay Intern (Paid Internship)
+
+### Revenue Analyst, Order to Cash
+DEPT: Finance/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/220e7f2c-c30e-4037-b8a5-c6d58ef7c5a6
+DESC: Revenue Analyst, Order to Cash
+
+### Security Trust and Assurance Manager
+DEPT: Information Security/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/beb2a907-1852-40f0-98f2-2d05ff518086
+DESC: Security Trust and Assurance Manager
+
+### Senior Employment Counsel
+DEPT: Legal/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/819beb05-643d-4d21-98ae-a35c54abb2f2
+DESC: Senior Employment Counsel
+
+### Senior HR Business Partner, Employee Relations Specialist - EMEA & APAC
+DEPT: People/Mission Control
+LOC: London
+URL: https://jobs.lever.co/sonarsource/d32211ce-a002-4243-b86c-6f5b2cb90775
+DESC: Senior HR Business Partner, Employee Relations Specialist - EMEA & APAC
+
+### Senior Revenue Accountant
+DEPT: Finance/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/6eae9b03-3d17-4c82-a129-cc2016ce620f
+DESC: Senior Revenue Accountant
+
+### Senior Tech Recruiter
+DEPT: People/Mission Control
+LOC: San Mateo, CA
+URL: https://jobs.lever.co/sonarsource/b1757fae-d6a8-4f5d-be91-9b0c90b94a5f
+DESC: Senior Tech Recruiter
+
+### Senior Tech Recruiter
+DEPT: People/Mission Control
+LOC: Austin, Texas
+URL: https://jobs.lever.co/sonarsource/d2f8a0b1-090e-4792-a6fc-5e5f4a98768f
+DESC: Senior Tech Recruiter
+
