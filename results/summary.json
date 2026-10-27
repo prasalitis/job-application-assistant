@@ -1,0 +1,13 @@
+{
+ "generated_utc": "2026-10-27T08:43:19.149311",
+ "total": 1803,
+ "per_company": {
+  "Mistral AI": 223,
+  "OpenAI": 796,
+  "Anthropic": 679,
+  "Bending Spoons": 52,
+  "Systematic": 39,
+  "Terma": 14
+ },
+ "errors": []
+}
